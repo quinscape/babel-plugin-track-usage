@@ -42,6 +42,7 @@ If the "varArgs" prop is set to true, the method can have additional parameters 
 
 All methods calls are identified by their first parameter, which needs to be a javascript literal at this point.
 
+The "debug" plugin option causes the extraction process to log debugging information if set to true.
 
 Access Usage Data
 -----------------
