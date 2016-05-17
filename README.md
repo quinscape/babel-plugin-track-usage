@@ -50,22 +50,26 @@ Access Usage Data
     var usageData = require("babel-plugin-track-usage/data").get()
 ```
 
-can be used to access the collected data will contain one field per module 
+can be used to access the collected data will contain a "usages" prop with one prop per analzyed module 
 
 ```
-    "./components/Grid": {
-        "module": "components/Grid",
-        "requires": {
-            "React": "react",
-            "cx": "classnames",
-            "i18n": "./service/i18n"
-        },
-        "calls": {
-            "i18n": {
-                "No Rows": true,
+{ 
+    "usages": {
+        "./components/Grid": {
+            "module": "components/Grid",
+            "requires": {
+                "React": "react",
+                "cx": "classnames",
+                "i18n": "./service/i18n"
+            },
+            "calls": {
+                "i18n": {
+                    "No Rows": true,
+                }
             }
         }
     }
+}
 
 ```
 

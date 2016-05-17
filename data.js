@@ -1,14 +1,21 @@
-var dataStore = {
-};
+var dataStore;
 
-module.exports = {
+var DataStore = {
     clear: function ()
     {
-        dataStore = {};
+        dataStore = {
+            usages : {
 
+            }
+        };
     },
     get: function()
     {
         return dataStore;
     }
 };
+
+DataStore.clear();
+
+module.exports = DataStore;
+

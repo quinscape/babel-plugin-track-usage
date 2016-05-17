@@ -1,6 +1,6 @@
 var nodeJsPath = require("path");
 
-var dataStore = require("../data").get();
+var dataStore = require("../data").get().usages;
 
 module.exports = function (t) {
 
