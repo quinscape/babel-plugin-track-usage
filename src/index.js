@@ -333,7 +333,7 @@ module.exports = function (t) {
                     {
                         if (state.opts.debug)
                         {
-                            console.log("Module call for variable " + callee.object.name + "");
+                            console.log("Member call for variable " + callee.object.name + "");
                         }
                         recordCall(data, node, true);
                     }
