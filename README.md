@@ -58,15 +58,9 @@ can be used to access the collected data will contain a "usages" prop with one p
     "usages": {
         "./components/Grid": {
             "module": "components/Grid",
-            "requires": {
-                "React": "react",
-                "cx": "classnames",
-                "i18n": "./service/i18n"
-            },
+            "requires": [ "react", "classnames", "./service/i18n"],
             "calls": {
-                "i18n": {
-                    "No Rows": true,
-                }
+                "i18n": ["No Rows"]
             }
         }
     }
@@ -77,9 +71,9 @@ can be used to access the collected data will contain a "usages" prop with one p
 The "module" prop repeats the module name (without leading "./").
 
 
-The "requires" prop contains a map of modules required by this module. The module name will be absolute for modules 
+The "requires" prop contains a array of modules required by this module. The module name will be absolute for modules 
 required out of node_modules and again relative to source root for relative requires. This is exactly the format of the 
-keys of the main data map. This can be used to track transitive call dependencies.
+keys of the "usages" map. This can be used to track transitive call dependencies.
 
-The calls prop contains a mapping the configured logical names of our methods to a map of 
-first argument values that are called in the module.
+The calls prop contains a mapping from the configured logical names of our methods to an array first argument values 
+that are called in the module.

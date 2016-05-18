@@ -1,6 +1,6 @@
 var nodeJsPath = require("path");
 
-var dataStore = require("../data").get().usages;
+var Data = require("../data");
 
 module.exports = function (t) {
 
@@ -17,23 +17,23 @@ module.exports = function (t) {
             var tf = data._config.trackedFunctions[e.name];
 
 
-            if ( (memberCall && e.fn) || (!memberCall && !e.fn))
+            if ( (memberCall && tf.fn) || (!memberCall && !tf.fn))
             {
                 if (data._config.debug)
                 {
                     console.log("Tracking ", node)
                 }
 
-                if (!e.fn || e.expr(callee))
+                if (!tf.fn || e.expr(callee))
                 {
                     var varArgs = tf.varArgs;
                     if (node.arguments.length == 1 || (varArgs && node.arguments.length >= 1))
                     {
-                        record = data.calls[e.name];
+                        record = data.callsMap[e.name];
                         if (!record)
                         {
                             record = {};
-                            data.calls[e.name] = record;
+                            data.callsMap[e.name] = record;
                         }
                         var value = staticEval(node.arguments[0]);
 
@@ -41,6 +41,10 @@ module.exports = function (t) {
 
                         if (value !== undefined)
                         {
+                            if (data._config.debug)
+                            {
+                                console.log("Record '" + value + "' for " + e.name);
+                            }
                             record[value] = true;
                         }
                         else if (data._config.debug)
@@ -80,8 +84,6 @@ module.exports = function (t) {
         }
         var len = root.length;
         var fullWithExtension = opts.filename.substring(root[len - 1] === nodeJsPath.sep ? len : len + 1);
-
-        //console.log(root);
 
         return fullWithExtension.substring(0, fullWithExtension.lastIndexOf("."));
     }
@@ -125,13 +127,17 @@ module.exports = function (t) {
                     var module = getRelativeModuleName(path.hub.file.opts);
                     if (!module)
                     {
+                        if (state.opts.debug)
+                        {
+                            console.log("No source root, ignoring everything");
+                        }
                         return;
                     }
 
-                    var data = dataStore["./" + module] = {
+                    var data = Data.get().usages["./" + module] = {
                         module: module,
-                        requires: {},
-                        calls: {}
+                        requiresMap: {},
+                        callsMap: {}
                     };
 
                     var lookup = {};
@@ -177,7 +183,41 @@ module.exports = function (t) {
                         return;
                     }
 
-                    var data = dataStore["./" + module];
+                    var data = Data.get().usages["./" + module];
+
+                    var reqArray = [];
+                    for (var varName in data.requiresMap)
+                    {
+                        if (data.requiresMap.hasOwnProperty(varName))
+                        {
+                            reqArray.push(data.requiresMap[varName]);
+                        }
+                    }
+
+                    var calls = {};
+                    for (var def in data.callsMap)
+                    {
+                        if (data.callsMap.hasOwnProperty(def))
+                        {
+                            var array = [];
+                            var map = data.callsMap[def];
+                            for (var name in map)
+                            {
+                                if (map.hasOwnProperty(name))
+                                {
+                                    array.push(name);
+                                }
+                            }
+
+                            calls[def] = array;
+                        }
+                    }
+
+                    data.requires = reqArray;
+                    data.calls = calls;
+
+                    delete data.callsMap;
+                    delete data.requiresMap;
                     delete data._config;
                 }
             },
@@ -200,7 +240,7 @@ module.exports = function (t) {
                 {
                     return;
                 }
-                var data = dataStore["./" + module];
+                var data = Data.get().usages["./" + module];
 
                 var nodeIsAssignment = t.isAssignmentExpression(node);
                 var nodeIsVariableDeclarator = t.isVariableDeclarator(node);
@@ -224,7 +264,7 @@ module.exports = function (t) {
                         // resolve relative module ("/../" to go back from the view to its directory)
                         required = "./" + nodeJsPath.normalize(module + "/../" + required)
                     }
-                    data.requires[left.name] = required;
+                    data.requiresMap[left.name] = required;
 
                     var array = data._config && data._config.moduleLookup[required];
                     if (array)
@@ -271,7 +311,7 @@ module.exports = function (t) {
                 {
                     return;
                 }
-                var data = dataStore["./" + module];
+                var data = Data.get().usages["./" + module];
 
                 var callee = node.callee;
 
@@ -288,13 +328,15 @@ module.exports = function (t) {
                     }
                     recordCall(data, node, false);
                 }
-                else if (t.isMemberExpression(callee) && t.isIdentifier(callee.object) && data._config.hasMemberCall[callee.object.name])
-                {
-                    if (state.opts.debug)
+                else {
+                    if (t.isMemberExpression(callee) && t.isIdentifier(callee.object) && data._config.hasMemberCall[callee.object.name])
                     {
-                        console.log("Module call for variable " + callee.object.name + "");
+                        if (state.opts.debug)
+                        {
+                            console.log("Module call for variable " + callee.object.name + "");
+                        }
+                        recordCall(data, node, true);
                     }
-                    recordCall(data, node, true);
                 }
             }
         }
