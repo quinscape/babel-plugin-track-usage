@@ -74,6 +74,10 @@ module.exports = function (t) {
     function getRelativeModuleName(opts)
     {
         var root = opts.sourceRoot;
+        if (!root)
+        {
+            return null;
+        }
         var len = root.length;
         var fullWithExtension = opts.filename.substring(root[len - 1] === nodeJsPath.sep ? len : len + 1);
 
@@ -119,6 +123,10 @@ module.exports = function (t) {
                 {
                     var pluginOpts = state.opts;
                     var module = getRelativeModuleName(path.hub.file.opts);
+                    if (!module)
+                    {
+                        return;
+                    }
 
                     var data = dataStore["./" + module] = {
                         module: module,
@@ -164,6 +172,10 @@ module.exports = function (t) {
                 exit: function (path, state)
                 {
                     var module = getRelativeModuleName(path.hub.file.opts);
+                    if (!module)
+                    {
+                        return;
+                    }
 
                     var data = dataStore["./" + module];
                     delete data._config;
@@ -184,6 +196,10 @@ module.exports = function (t) {
                 var left, right;
 
                 var module = getRelativeModuleName(path.hub.file.opts);
+                if (!module)
+                {
+                    return;
+                }
                 var data = dataStore["./" + module];
 
                 var nodeIsAssignment = t.isAssignmentExpression(node);
@@ -251,6 +267,10 @@ module.exports = function (t) {
                 var node = path.node;
 
                 var module = getRelativeModuleName(path.hub.file.opts);
+                if (!module)
+                {
+                    return;
+                }
                 var data = dataStore["./" + module];
 
                 var callee = node.callee;
