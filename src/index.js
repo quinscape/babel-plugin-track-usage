@@ -29,11 +29,11 @@ module.exports = function (t) {
                     var varArgs = tf.varArgs;
                     if (node.arguments.length == 1 || (varArgs && node.arguments.length >= 1))
                     {
-                        record = data.callsMap[e.name];
+                        record = data.calls[e.name];
                         if (!record)
                         {
                             record = {};
-                            data.callsMap[e.name] = record;
+                            data.calls[e.name] = record;
                         }
                         var value = staticEval(node.arguments[0]);
 
@@ -120,105 +120,58 @@ module.exports = function (t) {
 
     return {
         visitor: {
-            "Program": {
-                enter: function (path, state)
+            "Program": function (path, state)
+            {
+                var pluginOpts = state.opts;
+                var module = getRelativeModuleName(path.hub.file.opts);
+                if (!module)
                 {
-                    var pluginOpts = state.opts;
-                    var module = getRelativeModuleName(path.hub.file.opts);
-                    if (!module)
-                    {
-                        if (state.opts.debug)
-                        {
-                            console.log("No source root, ignoring everything");
-                        }
-                        return;
-                    }
-
-                    var data = Data.get().usages["./" + module] = {
-                        module: module,
-                        requiresMap: {},
-                        callsMap: {}
-                    };
-
-                    var lookup = {};
-
-                    var trackedFunctions = pluginOpts.trackedFunctions;
-                    for (var name in trackedFunctions)
-                    {
-                        if (trackedFunctions.hasOwnProperty(name))
-                        {
-                            var tf = trackedFunctions[name];
-                            var array = lookup[tf.module];
-                            if (!array)
-                            {
-                                array = [name];
-                                lookup[tf.module] = array;
-                            }
-                            else
-                            {
-                                array.push(name);
-                            }
-                        }
-                    }
-
-                    data._config = {
-                        trackedFunctions: trackedFunctions,
-                        debug: !!pluginOpts.debug,
-                        moduleLookup: lookup,
-                        trackedByVar: {},
-                        hasMemberCall: {},
-                        hasModuleCall: {}
-                    };
-
                     if (state.opts.debug)
                     {
-                        console.log("Analysing './" + module + "'");
+                        console.log("No source root, ignoring everything");
                     }
-                },
-                exit: function (path, state)
+                    return;
+                }
+
+                var data = Data._internal()["./" + module] = {
+                    module: module,
+                    requires: {},
+                    calls: {}
+                };
+
+                var lookup = {};
+
+                var trackedFunctions = pluginOpts.trackedFunctions;
+                for (var name in trackedFunctions)
                 {
-                    var module = getRelativeModuleName(path.hub.file.opts);
-                    if (!module)
+                    if (trackedFunctions.hasOwnProperty(name))
                     {
-                        return;
-                    }
-
-                    var data = Data.get().usages["./" + module];
-
-                    var reqArray = [];
-                    for (var varName in data.requiresMap)
-                    {
-                        if (data.requiresMap.hasOwnProperty(varName))
+                        var tf = trackedFunctions[name];
+                        var array = lookup[tf.module];
+                        if (!array)
                         {
-                            reqArray.push(data.requiresMap[varName]);
+                            array = [name];
+                            lookup[tf.module] = array;
+                        }
+                        else
+                        {
+                            array.push(name);
                         }
                     }
+                }
 
-                    var calls = {};
-                    for (var def in data.callsMap)
-                    {
-                        if (data.callsMap.hasOwnProperty(def))
-                        {
-                            var array = [];
-                            var map = data.callsMap[def];
-                            for (var name in map)
-                            {
-                                if (map.hasOwnProperty(name))
-                                {
-                                    array.push(name);
-                                }
-                            }
+                data._config = {
+                    trackedFunctions: trackedFunctions,
+                    debug: !!pluginOpts.debug,
+                    moduleLookup: lookup,
+                    trackedByVar: {},
+                    hasMemberCall: {},
+                    hasModuleCall: {}
+                };
 
-                            calls[def] = array;
-                        }
-                    }
-
-                    data.requires = reqArray;
-                    data.calls = calls;
-
-                    delete data.callsMap;
-                    delete data.requiresMap;
-                    delete data._config;
+                if (state.opts.debug)
+                {
+                    console.log("Analysing './" + module + "'");
                 }
             },
             "AssignmentExpression|VariableDeclarator": function (path, state)
@@ -240,7 +193,7 @@ module.exports = function (t) {
                 {
                     return;
                 }
-                var data = Data.get().usages["./" + module];
+                var data = Data._internal()["./" + module];
 
                 var nodeIsAssignment = t.isAssignmentExpression(node);
                 var nodeIsVariableDeclarator = t.isVariableDeclarator(node);
@@ -264,7 +217,7 @@ module.exports = function (t) {
                         // resolve relative module ("/../" to go back from the view to its directory)
                         required = "./" + nodeJsPath.normalize(module + "/../" + required)
                     }
-                    data.requiresMap[left.name] = required;
+                    data.requires[left.name] = required;
 
                     var array = data._config && data._config.moduleLookup[required];
                     if (array)
@@ -311,7 +264,7 @@ module.exports = function (t) {
                 {
                     return;
                 }
-                var data = Data.get().usages["./" + module];
+                var data = Data._internal()["./" + module];
 
                 var callee = node.callee;
 
