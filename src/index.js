@@ -2,6 +2,20 @@ var nodeJsPath = require("path");
 
 var Data = require("../data");
 
+function strip(path, sourceRoot)
+{
+    if (sourceRoot)
+    {
+        if (path.indexOf(sourceRoot) !== 0)
+        {
+            throw new Error("Path does not start with plugin sourceRoot: " + path + ", sourceRoot = " + sourceRoot);
+        }
+
+        return path.substring(sourceRoot.length);
+    }
+    return path;
+}
+
 module.exports = function (t) {
 
     t = t.types;
@@ -133,7 +147,7 @@ module.exports = function (t) {
                     return;
                 }
 
-                var data = Data._internal()["./" + module] = {
+                var data = Data._internal()["./" + strip(module, pluginOpts.sourceRoot)] = {
                     module: module,
                     requires: {},
                     calls: {}
@@ -177,7 +191,7 @@ module.exports = function (t) {
             "AssignmentExpression|VariableDeclarator": function (path, state)
             {
                 //dir("state", state);
-
+                var pluginOpts = state.opts;
                 var node = path.node;
                 var scope = path.scope;
                 if (scope.parent)
@@ -193,7 +207,7 @@ module.exports = function (t) {
                 {
                     return;
                 }
-                var data = Data._internal()["./" + module];
+                var data = Data._internal()["./" + strip(module, pluginOpts.sourceRoot)];
 
                 var nodeIsAssignment = t.isAssignmentExpression(node);
                 var nodeIsVariableDeclarator = t.isVariableDeclarator(node);
@@ -215,7 +229,7 @@ module.exports = function (t) {
                     if (required[0] === ".")
                     {
                         // resolve relative module ("/../" to go back from the view to its directory)
-                        required = "./" + nodeJsPath.normalize(module + "/../" + required)
+                        required = "./" + strip(nodeJsPath.normalize(module + "/../" + required), pluginOpts.sourceRoot);
                     }
                     data.requires[left.name] = required;
 
@@ -257,6 +271,7 @@ module.exports = function (t) {
             },
             "CallExpression": function (path, state)
             {
+                var pluginOpts = state.opts;
                 var node = path.node;
 
                 var module = getRelativeModuleName(path.hub.file.opts);
@@ -264,7 +279,7 @@ module.exports = function (t) {
                 {
                     return;
                 }
-                var data = Data._internal()["./" + module];
+                var data = Data._internal()["./" + strip(module, pluginOpts.sourceRoot)];
 
                 var callee = node.callee;
 
