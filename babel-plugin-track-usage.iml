@@ -5,7 +5,5 @@
     <content url="file://$MODULE_DIR$" />
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="Local node_modules" level="project" />
-    <orderEntry type="library" name="babel-plugin-track-usage node_modules" level="project" />
   </component>
 </module>
