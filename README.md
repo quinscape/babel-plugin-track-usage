@@ -17,6 +17,8 @@ statically analyzable calls to the declared functions.
 Plugin Configuration
 --------------------
 
+In your *.babelrc* (or equivalent):
+
 ```
     ["track-usage", {
         trackedFunctions: {
@@ -30,25 +32,25 @@ Plugin Configuration
     }]
 ```
 
-The plugin options object needs a key "trackedFunctions" that contains function definitions for every function to be tracked.
+The plugin options object needs a key *"trackedFunctions"* that contains function definitions for every function to be tracked.
 
 The name needs to be unique and does not matter (results will show up under this name in the resulting JSON).
 
-The "module" prop is a module location relative to babel sourceRoot. 
+The *"module"* prop is a module location relative to babel sourceRoot. 
 
-The "fn" prop is either empty if the module is called as function itself or fn contains the name of the method to invoke on the module.
+The *"fn"* prop is either empty if the module is called as function itself or fn contains the name of the method to invoke on the module.
 
-If the "varArgs" prop is set to true, the method can have additional parameters to the first statically analyzable one.
+If the *"varArgs"* prop is set to true, the method can have additional parameters to the first statically analyzable one.
 
 All methods calls are identified by their first parameter, which needs to be a javascript literal at this point.
 
-The "debug" plugin option causes the extraction process to log debugging information if set to true.
+The *"debug"* plugin option causes the extraction process to log debugging information if set to true.
 
-the "sourceRoot" plugin option allows to have all relative module paths relative to that dir
+the *"sourceRoot"* plugin option allows to have all relative module paths relative to that dir
 
 The source root option cannot start with "./" but will lead to all local modules having a "./" prefix
 to umambiguously distinguish them from NPM dependency modules which are listed as requires but are
-not analyzed themselves.
+not analyzed themselves. The sourceRoot option should end in a "/".
 
 Access Usage Data
 -----------------
@@ -85,7 +87,6 @@ The calls prop contains a mapping from the configured logical names of our metho
 that are called in the module.
 
 # Example with Webpack
-
 
 The module "./webpack/track-usage-plugin.js" contains a simple webpack plugin to store 
 the collected data in a JSON file. 
