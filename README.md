@@ -83,3 +83,46 @@ keys of the "usages" map. This can be used to track transitive call dependencies
 
 The calls prop contains a mapping from the configured logical names of our methods to an array first argument values 
 that are called in the module.
+
+# Example with Webpack
+
+
+The module "./webpack/track-usage-plugin.js" contains a simple webpack plugin to store 
+the collected data in a JSON file. 
+
+## Configuring the example webpack plugin
+```javascript
+var path = require("path");
+
+var TrackUsagePlugin = require("babel-plugin-track-usage/webpack/track-usage-plugin");
+
+module.exports = {
+    // ... rest of webpack config...
+    plugins: [
+        new TrackUsagePlugin({
+            output: path.join(__dirname, "src/main/base/resources/js/track-usage.json")
+        })
+    ]
+};
+
+```
+
+The babel plugin config is as such for my project
+
+```
+    [
+        "track-usage",
+        {
+            "sourceRoot" : "src/main/js/",
+            "trackedFunctions": {
+                "i18n": {
+                    "module": "./service/i18n",
+                    "fn": "",
+                    "varArgs": true
+                }
+            },
+            "debug": false
+        }
+    ]
+
+```
