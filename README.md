@@ -34,7 +34,7 @@ The plugin options object needs a key "trackedFunctions" that contains function 
 
 The name needs to be unique and does not matter (results will show up under this name in the resulting JSON).
 
-The "module" prop is a module location relative to sourceRoot. 
+The "module" prop is a module location relative to babel sourceRoot. 
 
 The "fn" prop is either empty if the module is called as function itself or fn contains the name of the method to invoke on the module.
 
