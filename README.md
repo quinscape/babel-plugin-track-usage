@@ -44,6 +44,12 @@ All methods calls are identified by their first parameter, which needs to be a j
 
 The "debug" plugin option causes the extraction process to log debugging information if set to true.
 
+the "sourceRoot" plugin option allows to have all relative module paths relative to that dir
+
+The source root option cannot start with "./" but will lead to all local modules having a "./" prefix
+to umambiguously distinguish them from NPM dependency modules which are listed as requires but are
+not analyzed themselves.
+
 Access Usage Data
 -----------------
 
