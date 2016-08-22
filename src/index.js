@@ -8,7 +8,7 @@ function strip(path, sourceRoot)
     {
         if (path.indexOf(sourceRoot) !== 0)
         {
-            throw new Error("Path does not start with plugin sourceRoot: " + path + ", sourceRoot = " + sourceRoot);
+            return null;
         }
 
         return path.substring(sourceRoot.length);
@@ -147,7 +147,14 @@ module.exports = function (t) {
                     return;
                 }
 
-                var data = Data._internal()["./" + strip(module, pluginOpts.sourceRoot)] = {
+                var relative = strip(module, pluginOpts.sourceRoot);
+
+                if (!relative)
+                {
+                    return;
+                }
+
+                var data = Data._internal()["./" + relative] = {
                     module: module,
                     requires: {},
                     calls: {}
@@ -207,7 +214,14 @@ module.exports = function (t) {
                 {
                     return;
                 }
-                var data = Data._internal()["./" + strip(module, pluginOpts.sourceRoot)];
+
+                var relative = strip(module, pluginOpts.sourceRoot);
+
+                if (!relative)
+                {
+                    return;
+                }
+                var data = Data._internal()["./" + relative];
 
                 var nodeIsAssignment = t.isAssignmentExpression(node);
                 var nodeIsVariableDeclarator = t.isVariableDeclarator(node);
@@ -229,7 +243,15 @@ module.exports = function (t) {
                     if (required[0] === ".")
                     {
                         // resolve relative module ("/../" to go back from the view to its directory)
-                        required = "./" + strip(nodeJsPath.normalize(module + "/../" + required), pluginOpts.sourceRoot);
+
+                        var relRequired = strip(nodeJsPath.normalize(module + "/../" + required), pluginOpts.sourceRoot);
+
+                        if (!relRequired)
+                        {
+                            return;
+                        }
+
+                        required = "./" + relRequired;
                     }
                     data.requires[left.name] = required;
 
@@ -279,7 +301,13 @@ module.exports = function (t) {
                 {
                     return;
                 }
-                var data = Data._internal()["./" + strip(module, pluginOpts.sourceRoot)];
+                var relative = strip(module, pluginOpts.sourceRoot);
+
+                if (!relative)
+                {
+                    return;
+                }
+                var data = Data._internal()["./" + relative];
 
                 var callee = node.callee;
 
