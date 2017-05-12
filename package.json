@@ -4,26 +4,6 @@
     "description": "Babel plugin to track calls to a configured set of modules",
     "repository": "https://github.com/fforw/babel-plugin-track-usage.git",
     "main": "src/index.js",
-    "dependencies": {
-        "babel-runtime": "^6.11.6"
-    },
-    "devDependencies": {
-        "babel-cli": "^6.11.4",
-        "babel-core": "^6.13.2",
-        "babel-plugin-espower": "^2.3.1",
-        "babel-plugin-transform-runtime": "^6.12.0",
-        "babel-preset-es2015": "^6.13.2",
-        "babel-register": "^6.11.6",
-        "chalk": "^1.1.0",
-        "clear": "0.0.1",
-        "diff": "^1.4.0",
-        "mocha": "^2.4.5",
-        "object.assign": "^4.0.3",
-        "power-assert": "^1.2.0",
-        "proxyquire": "^1.7.3",
-        "sinon": "^1.17.2",
-        "watch": "^0.16.0"
-    },
     "scripts": {
         "test": "mocha --compilers js:babel-register -R spec test/",
         "prepublish": "npm test"
@@ -36,5 +16,17 @@
     ],
     "author": "Sven Helmberger",
     "license": "Apache-2.0",
-    "homepage": "https://github.com/fforw/babel-plugin-track-usage"
+    "homepage": "https://github.com/fforw/babel-plugin-track-usage",
+    "dependencies": {
+        "babel-runtime": "^6.23.0"
+    },
+    "devDependencies": {
+        "babel-cli": "^6.24.1",
+        "babel-core": "^6.24.1",
+        "babel-plugin-espower": "^2.3.2",
+        "babel-preset-es2015": "^6.24.1",
+        "babel-register": "^6.24.1",
+        "mocha": "^3.3.0",
+        "power-assert": "^1.4.2"
+    }
 }

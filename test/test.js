@@ -3,27 +3,26 @@ var babel = require("babel-core");
 
 var Data = require("../data");
 
-var assign = require('object.assign').getPolyfill();
 var OPTIONS = {
 
     plugins: [
-        [ require("../src/index")(babel), {
+        [require("../src/index")(babel), {
             trackedFunctions: {
-                moduleFn:  {
+                moduleFn: {
                     module: "./service/moduleFn",
                     fn: "",
                     varArgs: true
                 },
-                nonVar:  {
+                nonVar: {
                     module: "./service/nonVarMod",
                     fn: ""
                 },
-                lookup:  {
+                lookup: {
                     module: "./service/lookup",
                     fn: "thing",
                     varArgs: true
                 },
-                nvLookup:  {
+                nvLookup: {
                     module: "./service/lookup",
                     fn: "nonvar"
                 }
@@ -39,7 +38,7 @@ describe("Track Usage Plugin", function ()
     it("detects module functions", function ()
     {
         Data.clear();
-        var out = babel.transform("var moduleFn = require('./service/moduleFn'); var nonvar = require('./service/nonVarMod'); var a=123; var b=moduleFn('Foo'); var c = nonvar('A'); var d = nonvar('Ignored', 1); var e = moduleFn('NotIgnored', 2);", assign({},OPTIONS, {
+        var out = babel.transform("var moduleFn = require('./service/moduleFn'); var nonvar = require('./service/nonVarMod'); var a=123; var b=moduleFn('Foo'); var c = nonvar('A'); var d = nonvar('Ignored', 1); var e = moduleFn('NotIgnored', 2);", Object.assign({}, OPTIONS, {
             filename: "/test/module.js"
         }));
 
@@ -60,7 +59,7 @@ describe("Track Usage Plugin", function ()
     it("detects member functions", function ()
     {
         Data.clear();
-        var out = babel.transform("var lookup = require('./service/lookup'); var a=123; var b=lookup.thing('Bar'); var c = lookup.thing('Present', 3); var d = lookup.nonvar('A'); var e = lookup.nonvar('Ignored',4)", assign({},OPTIONS, {
+        var out = babel.transform("var lookup = require('./service/lookup'); var a=123; var b=lookup.thing('Bar'); var c = lookup.thing('Present', 3); var d = lookup.nonvar('A'); var e = lookup.nonvar('Ignored',4)", Object.assign({}, OPTIONS, {
             filename: "/test/module.js"
         }));
 
