@@ -20,7 +20,7 @@ module.exports = function (t) {
 
     t = t.types;
 
-    function recordCall(data, node, memberCall)
+    function recordCall(data, node, memberCall, importedFnCall)
     {
         var record, callee = node.callee;
 
@@ -31,17 +31,17 @@ module.exports = function (t) {
             var tf = data._config.trackedFunctions[e.name];
 
 
-            if ( (memberCall && tf.fn) || (!memberCall && !tf.fn))
+            if ( (memberCall && tf.fn) || (!memberCall && !tf.fn) || (!memberCall && importedFnCall && tf.fn))
             {
                 if (data._config.debug)
                 {
                     console.log("Tracking ", node)
                 }
 
-                if (!tf.fn || e.expr(callee))
+                if (!tf.fn || importedFnCall || e.expr(callee))
                 {
                     var varArgs = tf.varArgs;
-                    if (node.arguments.length == 1 || (varArgs && node.arguments.length >= 1))
+                    if (node.arguments.length === 1 || (varArgs && node.arguments.length >= 1))
                     {
                         record = data.calls[e.name];
                         if (!record)
@@ -132,6 +132,76 @@ module.exports = function (t) {
         return t.isLiteral(first);
     }
 
+    function trackVar(data, state, varName, modulePath, importedName)
+    {
+        var pluginOpts = state.opts;
+
+        if (modulePath[0] === ".")
+        {
+            // resolve relative module ("/../" to go back from the view to its directory)
+
+            var relRequired = strip(nodeJsPath.normalize(module + "/../" + modulePath), pluginOpts.sourceRoot);
+
+            if (!relRequired)
+            {
+                return;
+            }
+
+            modulePath = "./" + relRequired;
+        }
+        data.requires[varName] = modulePath;
+
+        var array = data._config && data._config.moduleLookup[modulePath];
+        if (array)
+        {
+            // copy tracked function association to local variable
+
+            var out = [];
+
+            for (var i = 0; i < array.length; i++)
+            {
+                var name = array[i];
+                var tf = data._config.trackedFunctions[name];
+                var fn = tf.fn;
+                if (fn)
+                {
+                    if (importedName)
+                    {
+                        if (importedName === fn)
+                        {
+                            data._config.isMemberCall[varName] = true;
+                        }
+                        else
+                        {
+                           continue;
+                        }
+                    }
+                    else
+                    {
+                        data._config.hasMemberCall[varName] = true;
+                    }
+
+                }
+                else
+                {
+                    data._config.hasModuleCall[varName] = true;
+                }
+
+                out.push({
+                    name: name,
+                    fn: importedName,
+                    expr: !!fn && !importedName && t.buildMatchMemberExpression(varName + "." + fn)
+                });
+            }
+
+            data._config.trackedByVar[varName] = out;
+
+            if (state.opts.debug)
+            {
+                console.log("Tracked module '" + modulePath + "' assigned to variable " + varName)
+            }
+        }
+    };
     return {
         visitor: {
             "Program": function (path, state)
@@ -160,7 +230,7 @@ module.exports = function (t) {
                     calls: {}
                 };
 
-                var lookup = {};
+                var moduleLookup = {};
 
                 var trackedFunctions = pluginOpts.trackedFunctions;
                 for (var name in trackedFunctions)
@@ -168,11 +238,11 @@ module.exports = function (t) {
                     if (trackedFunctions.hasOwnProperty(name))
                     {
                         var tf = trackedFunctions[name];
-                        var array = lookup[tf.module];
+                        var array = moduleLookup[tf.module];
                         if (!array)
                         {
                             array = [name];
-                            lookup[tf.module] = array;
+                            moduleLookup[tf.module] = array;
                         }
                         else
                         {
@@ -184,9 +254,10 @@ module.exports = function (t) {
                 data._config = {
                     trackedFunctions: trackedFunctions,
                     debug: !!pluginOpts.debug,
-                    moduleLookup: lookup,
+                    moduleLookup: moduleLookup,
                     trackedByVar: {},
                     hasMemberCall: {},
+                    isMemberCall: {},
                     hasModuleCall: {}
                 };
 
@@ -238,57 +309,7 @@ module.exports = function (t) {
 
                 if (t.isIdentifier(left) && isRequire(right))
                 {
-                    var required = right.arguments[0].value;
-
-                    if (required[0] === ".")
-                    {
-                        // resolve relative module ("/../" to go back from the view to its directory)
-
-                        var relRequired = strip(nodeJsPath.normalize(module + "/../" + required), pluginOpts.sourceRoot);
-
-                        if (!relRequired)
-                        {
-                            return;
-                        }
-
-                        required = "./" + relRequired;
-                    }
-                    data.requires[left.name] = required;
-
-                    var array = data._config && data._config.moduleLookup[required];
-                    if (array)
-                    {
-                        // copy tracked function association to local variable
-
-                        var out = new Array(array.length);
-
-                        for (var i = 0; i < array.length; i++)
-                        {
-                            var expr = null, name = array[i];
-                            var tf = data._config.trackedFunctions[name];
-                            var fn = tf.fn;
-                            if (fn)
-                            {
-                                data._config.hasMemberCall[left.name] = true;
-                            }
-                            else
-                            {
-                                data._config.hasModuleCall[left.name] = true;
-                            }
-
-                            out[i] = {
-                                name: name,
-                                expr: !!fn && t.buildMatchMemberExpression( left.name + "." + fn)
-                            };
-                        }
-
-                        data._config.trackedByVar[left.name] = out;
-
-                        if (state.opts.debug)
-                        {
-                            console.log("Tracked module '" + required + "' assigned to variable " + left.name)
-                        }
-                    }
+                    trackVar(data, state, left.name, right.arguments[0].value);
                 }
             },
             "CallExpression": function (path, state)
@@ -322,16 +343,58 @@ module.exports = function (t) {
                     {
                         console.log("Module call for variable " + callee.name + "");
                     }
-                    recordCall(data, node, false);
+                    recordCall(data, node, false, false);
                 }
-                else {
-                    if (t.isMemberExpression(callee) && t.isIdentifier(callee.object) && data._config.hasMemberCall[callee.object.name])
+                else if (t.isIdentifier(callee) && data._config.isMemberCall[callee.name])
+                {
+                    if (state.opts.debug)
                     {
-                        if (state.opts.debug)
-                        {
-                            console.log("Member call for variable " + callee.object.name + "");
-                        }
-                        recordCall(data, node, true);
+                        console.log("Imported member call for variable " + callee.name + "");
+                    }
+                    recordCall(data, node, false, true);
+                }
+                else if (t.isMemberExpression(callee) && t.isIdentifier(callee.object) && data._config.hasMemberCall[callee.object.name])
+                {
+                    if (state.opts.debug)
+                    {
+                        console.log("Member call for variable " + callee.object.name + "");
+                    }
+                    recordCall(data, node, true, false);
+                }
+            },
+            "ImportDeclaration" : function(path, state)
+            {
+                var i, node = path.node, specifier;
+                var pluginOpts = state.opts;
+
+
+                var module = getRelativeModuleName(path.hub.file.opts);
+                if (!module)
+                {
+                    return;
+                }
+
+                var relative = strip(module, pluginOpts.sourceRoot);
+
+                if (!relative)
+                {
+                    return;
+                }
+                var data = Data._internal()["./" + relative];
+
+                for (i = 0; i < node.specifiers.length; i++)
+                {
+                    specifier = node.specifiers[i];
+
+                    if (t.isImportDefaultSpecifier(specifier))
+                    {
+                        trackVar(data, state, specifier.local.name, node.source.value);
+                    }
+                    else if (t.isImportSpecifier(specifier))
+                    {
+                        trackVar(data, state, specifier.local.name, node.source.value, specifier.imported.name);
+
+                        //console.log(specifier.imported, specifier.local);
                     }
                 }
             }

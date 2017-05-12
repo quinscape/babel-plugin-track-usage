@@ -1,5 +1,7 @@
 var assert = require("power-assert");
 var babel = require("babel-core");
+var fs = require("fs");
+var path = require("path");
 
 var Data = require("../data");
 
@@ -33,47 +35,131 @@ var OPTIONS = {
     sourceRoot: "/test/"
 };
 
+function transform(relPath)
+{
+    return babel.transform(fs.readFileSync(path.join(__dirname, relPath)), Object.assign({}, OPTIONS, {
+        filename: "/test/module.js"
+    }));
+
+}
+
 describe("Track Usage Plugin", function ()
 {
-    it("detects module functions", function ()
+    describe("ES5 require", function ()
     {
-        Data.clear();
-        var out = babel.transform("var moduleFn = require('./service/moduleFn'); var nonvar = require('./service/nonVarMod'); var a=123; var b=moduleFn('Foo'); var c = nonvar('A'); var d = nonvar('Ignored', 1); var e = moduleFn('NotIgnored', 2);", Object.assign({}, OPTIONS, {
-            filename: "/test/module.js"
-        }));
+        it("detects module functions", function ()
+        {
+            Data.clear();
+            transform("./test-modules/mod-fn-es5.js");
 
-        var usages = Data.get().usages;
-        //console.log(JSON.stringify(usages, null, 2));
-        assert(usages['./module'].module === "module");
-        assert(usages['./module'].requires[0] === "./service/moduleFn");
-        assert(usages['./module'].requires[1] === "./service/nonVarMod");
+            var usages = Data.get().usages;
+            //console.log(JSON.stringify(usages, null, 2));
+            assert(usages['./module'].module === "module");
+            assert(usages['./module'].requires[0] === "./service/moduleFn");
+            assert(usages['./module'].requires[1] === "./service/nonVarMod");
 
-        assert(usages['./module'].calls.moduleFn.length === 2);
-        assert(usages['./module'].calls.moduleFn[0] === "Foo");
-        assert(usages['./module'].calls.moduleFn[1] === "NotIgnored");
+            assert(usages['./module'].calls.moduleFn.length === 2);
+            assert(usages['./module'].calls.moduleFn[0] === "Foo");
+            assert(usages['./module'].calls.moduleFn[1] === "NotIgnored");
 
-        assert(usages['./module'].calls.nonVar.length === 1);
-        assert(usages['./module'].calls.nonVar[0] === "A");
+            assert(usages['./module'].calls.nonVar.length === 1);
+            assert(usages['./module'].calls.nonVar[0] === "A");
+        });
+
+        it("detects member functions", function ()
+        {
+            Data.clear();
+            transform("./test-modules/member-fn-es5.js");
+
+            var usages = Data.get().usages;
+            //console.log(JSON.stringify(usages, null, 2));
+
+            assert(usages['./module'].module === "module");
+            assert(usages['./module'].requires[0] === "./service/lookup");
+            assert(usages['./module'].calls.lookup.length === 2);
+            assert(usages['./module'].calls.lookup[0] === "Bar");
+            assert(usages['./module'].calls.lookup[1] === "Present");
+
+            assert(usages['./module'].calls.nvLookup.length === 1);
+            assert(usages['./module'].calls.nvLookup[0] === "A");
+        })
+
     });
 
-    it("detects member functions", function ()
+    describe("ES6 modules", function ()
     {
-        Data.clear();
-        var out = babel.transform("var lookup = require('./service/lookup'); var a=123; var b=lookup.thing('Bar'); var c = lookup.thing('Present', 3); var d = lookup.nonvar('A'); var e = lookup.nonvar('Ignored',4)", Object.assign({}, OPTIONS, {
-            filename: "/test/module.js"
-        }));
+        it("detects module functions", function ()
+        {
+            Data.clear();
+            transform("./test-modules/mod-fn-es6.js");
 
-        var usages = Data.get().usages;
-        //console.log(JSON.stringify(usages, null, 2));
+            var usages = Data.get().usages;
+            //console.log(JSON.stringify(usages, null, 2));
+            assert(usages['./module'].module === "module");
+            assert(usages['./module'].requires[0] === "./service/moduleFn");
+            assert(usages['./module'].requires[1] === "./service/nonVarMod");
 
-        assert(usages['./module'].module === "module");
-        assert(usages['./module'].requires[0] === "./service/lookup");
-        assert(usages['./module'].calls.lookup.length === 2);
-        assert(usages['./module'].calls.lookup[0] === "Bar");
-        assert(usages['./module'].calls.lookup[1] === "Present");
+            assert(usages['./module'].calls.moduleFn.length === 2);
+            assert(usages['./module'].calls.moduleFn[0] === "Foo");
+            assert(usages['./module'].calls.moduleFn[1] === "NotIgnored");
 
-        assert(usages['./module'].calls.nvLookup.length === 1);
-        assert(usages['./module'].calls.nvLookup[0] === "A");
-    })
+            assert(usages['./module'].calls.nonVar.length === 1);
+            assert(usages['./module'].calls.nonVar[0] === "A");
+        });
 
+        it("detects member functions", function ()
+        {
+            Data.clear();
+            transform("./test-modules/member-fn-es6.js");
+
+            var usages = Data.get().usages;
+            //console.log(JSON.stringify(usages, null, 2));
+
+            assert(usages['./module'].module === "module");
+            assert(usages['./module'].requires[0] === "./service/lookup");
+            assert(usages['./module'].calls.lookup.length === 2);
+            assert(usages['./module'].calls.lookup[0] === "Bar");
+            assert(usages['./module'].calls.lookup[1] === "Present");
+
+            assert(usages['./module'].calls.nvLookup.length === 1);
+            assert(usages['./module'].calls.nvLookup[0] === "A");
+        })
+
+        it("detects member functions with variable binding", function ()
+        {
+            Data.clear();
+            transform("./test-modules/member-fn-es6-2.js");
+
+            var usages = Data.get().usages;
+            //console.log(JSON.stringify(usages, null, 2));
+
+            assert(usages['./module'].module === "module");
+            assert(usages['./module'].requires[0] === "./service/lookup");
+            assert(usages['./module'].calls.lookup.length === 2);
+            assert(usages['./module'].calls.lookup[0] === "Bar");
+            assert(usages['./module'].calls.lookup[1] === "Present");
+
+            assert(usages['./module'].calls.nvLookup.length === 1);
+            assert(usages['./module'].calls.nvLookup[0] === "A");
+        })
+
+        it("detects member functions with aliased binding", function ()
+        {
+            Data.clear();
+            transform("./test-modules/member-fn-es6-alias.js");
+
+            var usages = Data.get().usages;
+            //console.log(JSON.stringify(usages, null, 2));
+
+            assert(usages['./module'].module === "module");
+            assert(usages['./module'].requires[0] === "./service/lookup");
+            assert(usages['./module'].calls.lookup.length === 2);
+            assert(usages['./module'].calls.lookup[0] === "Bar");
+            assert(usages['./module'].calls.lookup[1] === "Present");
+
+            assert(usages['./module'].calls.nvLookup.length === 1);
+            assert(usages['./module'].calls.nvLookup[0] === "A");
+        })
+
+    });
 });
