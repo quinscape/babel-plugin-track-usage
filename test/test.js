@@ -32,13 +32,13 @@ var OPTIONS = {
             debug: false
         }]
     ],
-    sourceRoot: "/test/"
+    sourceRoot: "./test-modules/"
 };
 
 function transform(relPath)
 {
     return babel.transform(fs.readFileSync(path.join(__dirname, relPath)), Object.assign({}, OPTIONS, {
-        filename: "/test/module.js"
+        filename: relPath
     }));
 
 }
@@ -54,16 +54,16 @@ describe("Track Usage Plugin", function ()
 
             var usages = Data.get().usages;
             //console.log(JSON.stringify(usages, null, 2));
-            assert(usages['./module'].module === "module");
-            assert(usages['./module'].requires[0] === "./service/moduleFn");
-            assert(usages['./module'].requires[1] === "./service/nonVarMod");
+            assert(usages['./mod-fn-es5'].module === "mod-fn-es5");
+            assert(usages['./mod-fn-es5'].requires[0] === "./service/moduleFn");
+            assert(usages['./mod-fn-es5'].requires[1] === "./service/nonVarMod");
 
-            assert(usages['./module'].calls.moduleFn.length === 2);
-            assert(usages['./module'].calls.moduleFn[0] === "Foo");
-            assert(usages['./module'].calls.moduleFn[1] === "NotIgnored");
+            assert(usages['./mod-fn-es5'].calls.moduleFn.length === 2);
+            assert(usages['./mod-fn-es5'].calls.moduleFn[0] === "Foo");
+            assert(usages['./mod-fn-es5'].calls.moduleFn[1] === "NotIgnored");
 
-            assert(usages['./module'].calls.nonVar.length === 1);
-            assert(usages['./module'].calls.nonVar[0] === "A");
+            assert(usages['./mod-fn-es5'].calls.nonVar.length === 1);
+            assert(usages['./mod-fn-es5'].calls.nonVar[0] === "A");
         });
 
         it("detects member functions", function ()
@@ -74,14 +74,14 @@ describe("Track Usage Plugin", function ()
             var usages = Data.get().usages;
             //console.log(JSON.stringify(usages, null, 2));
 
-            assert(usages['./module'].module === "module");
-            assert(usages['./module'].requires[0] === "./service/lookup");
-            assert(usages['./module'].calls.lookup.length === 2);
-            assert(usages['./module'].calls.lookup[0] === "Bar");
-            assert(usages['./module'].calls.lookup[1] === "Present");
+            assert(usages['./member-fn-es5'].module === "member-fn-es5");
+            assert(usages['./member-fn-es5'].requires[0] === "./service/lookup");
+            assert(usages['./member-fn-es5'].calls.lookup.length === 2);
+            assert(usages['./member-fn-es5'].calls.lookup[0] === "Bar");
+            assert(usages['./member-fn-es5'].calls.lookup[1] === "Present");
 
-            assert(usages['./module'].calls.nvLookup.length === 1);
-            assert(usages['./module'].calls.nvLookup[0] === "A");
+            assert(usages['./member-fn-es5'].calls.nvLookup.length === 1);
+            assert(usages['./member-fn-es5'].calls.nvLookup[0] === "A");
         })
 
     });
@@ -95,16 +95,16 @@ describe("Track Usage Plugin", function ()
 
             var usages = Data.get().usages;
             //console.log(JSON.stringify(usages, null, 2));
-            assert(usages['./module'].module === "module");
-            assert(usages['./module'].requires[0] === "./service/moduleFn");
-            assert(usages['./module'].requires[1] === "./service/nonVarMod");
+            assert(usages['./mod-fn-es6'].module === "mod-fn-es6");
+            assert(usages['./mod-fn-es6'].requires[0] === "./service/moduleFn");
+            assert(usages['./mod-fn-es6'].requires[1] === "./service/nonVarMod");
 
-            assert(usages['./module'].calls.moduleFn.length === 2);
-            assert(usages['./module'].calls.moduleFn[0] === "Foo");
-            assert(usages['./module'].calls.moduleFn[1] === "NotIgnored");
+            assert(usages['./mod-fn-es6'].calls.moduleFn.length === 2);
+            assert(usages['./mod-fn-es6'].calls.moduleFn[0] === "Foo");
+            assert(usages['./mod-fn-es6'].calls.moduleFn[1] === "NotIgnored");
 
-            assert(usages['./module'].calls.nonVar.length === 1);
-            assert(usages['./module'].calls.nonVar[0] === "A");
+            assert(usages['./mod-fn-es6'].calls.nonVar.length === 1);
+            assert(usages['./mod-fn-es6'].calls.nonVar[0] === "A");
         });
 
         it("detects member functions", function ()
@@ -115,14 +115,14 @@ describe("Track Usage Plugin", function ()
             var usages = Data.get().usages;
             //console.log(JSON.stringify(usages, null, 2));
 
-            assert(usages['./module'].module === "module");
-            assert(usages['./module'].requires[0] === "./service/lookup");
-            assert(usages['./module'].calls.lookup.length === 2);
-            assert(usages['./module'].calls.lookup[0] === "Bar");
-            assert(usages['./module'].calls.lookup[1] === "Present");
+            assert(usages['./member-fn-es6'].module === "member-fn-es6");
+            assert(usages['./member-fn-es6'].requires[0] === "./service/lookup");
+            assert(usages['./member-fn-es6'].calls.lookup.length === 2);
+            assert(usages['./member-fn-es6'].calls.lookup[0] === "Bar");
+            assert(usages['./member-fn-es6'].calls.lookup[1] === "Present");
 
-            assert(usages['./module'].calls.nvLookup.length === 1);
-            assert(usages['./module'].calls.nvLookup[0] === "A");
+            assert(usages['./member-fn-es6'].calls.nvLookup.length === 1);
+            assert(usages['./member-fn-es6'].calls.nvLookup[0] === "A");
         })
 
         it("detects member functions with variable binding", function ()
@@ -133,14 +133,14 @@ describe("Track Usage Plugin", function ()
             var usages = Data.get().usages;
             //console.log(JSON.stringify(usages, null, 2));
 
-            assert(usages['./module'].module === "module");
-            assert(usages['./module'].requires[0] === "./service/lookup");
-            assert(usages['./module'].calls.lookup.length === 2);
-            assert(usages['./module'].calls.lookup[0] === "Bar");
-            assert(usages['./module'].calls.lookup[1] === "Present");
+            assert(usages['./member-fn-es6-2'].module === "member-fn-es6-2");
+            assert(usages['./member-fn-es6-2'].requires[0] === "./service/lookup");
+            assert(usages['./member-fn-es6-2'].calls.lookup.length === 2);
+            assert(usages['./member-fn-es6-2'].calls.lookup[0] === "Bar");
+            assert(usages['./member-fn-es6-2'].calls.lookup[1] === "Present");
 
-            assert(usages['./module'].calls.nvLookup.length === 1);
-            assert(usages['./module'].calls.nvLookup[0] === "A");
+            assert(usages['./member-fn-es6-2'].calls.nvLookup.length === 1);
+            assert(usages['./member-fn-es6-2'].calls.nvLookup[0] === "A");
         })
 
         it("detects member functions with aliased binding", function ()
@@ -151,15 +151,35 @@ describe("Track Usage Plugin", function ()
             var usages = Data.get().usages;
             //console.log(JSON.stringify(usages, null, 2));
 
-            assert(usages['./module'].module === "module");
-            assert(usages['./module'].requires[0] === "./service/lookup");
-            assert(usages['./module'].calls.lookup.length === 2);
-            assert(usages['./module'].calls.lookup[0] === "Bar");
-            assert(usages['./module'].calls.lookup[1] === "Present");
+            assert(usages['./member-fn-es6-alias'].module === "member-fn-es6-alias");
+            assert(usages['./member-fn-es6-alias'].requires[0] === "./service/lookup");
+            assert(usages['./member-fn-es6-alias'].calls.lookup.length === 2);
+            assert(usages['./member-fn-es6-alias'].calls.lookup[0] === "Bar");
+            assert(usages['./member-fn-es6-alias'].calls.lookup[1] === "Present");
 
-            assert(usages['./module'].calls.nvLookup.length === 1);
-            assert(usages['./module'].calls.nvLookup[0] === "A");
+            assert(usages['./member-fn-es6-alias'].calls.nvLookup.length === 1);
+            assert(usages['./member-fn-es6-alias'].calls.nvLookup[0] === "A");
         })
 
     });
+
+    it("supports sub directories", function ()
+    {
+        Data.clear();
+        transform("./test-modules/sub/mod-fn-es6.js");
+
+        var usages = Data.get().usages;
+        //console.log(JSON.stringify(usages, null, 2));
+        assert(usages['./sub/mod-fn-es6'].module === "sub/mod-fn-es6");
+        assert(usages['./sub/mod-fn-es6'].requires[0] === "./service/moduleFn");
+        assert(usages['./sub/mod-fn-es6'].requires[1] === "./service/nonVarMod");
+
+        assert(usages['./sub/mod-fn-es6'].calls.moduleFn.length === 2);
+        assert(usages['./sub/mod-fn-es6'].calls.moduleFn[0] === "Foo");
+        assert(usages['./sub/mod-fn-es6'].calls.moduleFn[1] === "NotIgnored");
+
+        assert(usages['./sub/mod-fn-es6'].calls.nonVar.length === 1);
+        assert(usages['./sub/mod-fn-es6'].calls.nonVar[0] === "A");
+    });
+
 });

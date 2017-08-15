@@ -132,7 +132,7 @@ module.exports = function (t) {
         return t.isLiteral(first);
     }
 
-    function trackVar(data, state, varName, modulePath, importedName)
+    function trackVar(data, state, varName, modulePath, importedName, module)
     {
         var pluginOpts = state.opts;
 
@@ -309,7 +309,7 @@ module.exports = function (t) {
 
                 if (t.isIdentifier(left) && isRequire(right))
                 {
-                    trackVar(data, state, left.name, right.arguments[0].value);
+                    trackVar(data, state, left.name, right.arguments[0].value, null, module);
                 }
             },
             "CallExpression": function (path, state)
@@ -388,11 +388,11 @@ module.exports = function (t) {
 
                     if (t.isImportDefaultSpecifier(specifier))
                     {
-                        trackVar(data, state, specifier.local.name, node.source.value);
+                        trackVar(data, state, specifier.local.name, node.source.value, null, module);
                     }
                     else if (t.isImportSpecifier(specifier))
                     {
-                        trackVar(data, state, specifier.local.name, node.source.value, specifier.imported.name);
+                        trackVar(data, state, specifier.local.name, node.source.value, specifier.imported.name, module);
 
                         //console.log(specifier.imported, specifier.local);
                     }
