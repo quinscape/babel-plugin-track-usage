@@ -182,4 +182,29 @@ describe("Track Usage Plugin", function ()
         assert(usages['./sub/mod-fn-es6'].calls.nonVar[0] === "A");
     });
 
+    it("supports template literals", function ()
+    {
+        Data.clear();
+        transform("./test-modules/member-fn-es6-template.js");
+
+        var usages = Data.get().usages;
+        //console.log(JSON.stringify(usages, null, 2));
+
+        assert(usages['./member-fn-es6-template'].module === "member-fn-es6-template");
+        assert(usages['./member-fn-es6-template'].requires[0] === "./service/lookup");
+        assert(usages['./member-fn-es6-template'].calls.lookup.length === 1);
+
+        console.log(JSON.stringify(usages['./member-fn-es6-template'].calls.lookup[0]));
+        assert(usages['./member-fn-es6-template'].calls.lookup[0] === "\n    Bar\n");
+    })
+
+    it("does not support template literals with expressions", function ()
+    {
+        Data.clear();
+        assert.throws(
+            function() { transform("./test-modules/member-fn-es6-template2.js") },
+            /Extracted template literals can't contain expressions/
+        );
+    })
+
 });

@@ -1,4 +1,6 @@
 var nodeJsPath = require("path");
+var fs = require("fs");
+//var dump = require("./dump");
 
 var Data = require("../data");
 
@@ -15,6 +17,7 @@ function strip(path, sourceRoot)
     }
     return path;
 }
+
 
 module.exports = function (t) {
 
@@ -49,21 +52,36 @@ module.exports = function (t) {
                             record = {};
                             data.calls[e.name] = record;
                         }
-                        var value = staticEval(node.arguments[0]);
+                        var value, firstArg = node.arguments[0];
 
-                        //console.log("EVAL", node.arguments[0] , " => ", value);
-
-                        if (value !== undefined)
+                        if ( t.isTemplateLiteral(firstArg))
                         {
-                            if (data._config.debug)
+                            if (firstArg.expressions.length > 0)
                             {
-                                console.log("Record '" + value + "' for " + e.name);
+                                throw new Error("Extracted template literals can't contain expressions");
                             }
+
+                            value = firstArg.quasis[0].value.raw;
                             record[value] = true;
                         }
-                        else if (data._config.debug)
+                        else
                         {
-                            console.log("Value evaluated to undefined");
+                            value = staticEval(firstArg);
+
+                            //console.log("EVAL", node.arguments[0] , " => ", value);
+
+                            if (value !== undefined)
+                            {
+                                if (data._config.debug)
+                                {
+                                    console.log("Record '" + value + "' for " + e.name);
+                                }
+                                record[value] = true;
+                            }
+                            else if (data._config.debug)
+                            {
+                                console.log("Value evaluated to undefined");
+                            }
                         }
                     }
                     else if (data._config.debug)
@@ -206,6 +224,8 @@ module.exports = function (t) {
         visitor: {
             "Program": function (path, state)
             {
+                //dump(path.node);
+
                 var pluginOpts = state.opts;
                 var module = getRelativeModuleName(path.hub.file.opts);
                 if (!module)
@@ -263,7 +283,7 @@ module.exports = function (t) {
 
                 if (state.opts.debug)
                 {
-                    console.log("Analysing './" + module + "'");
+                    console.log("Analy  sing './" + module + "'");
                 }
             },
             "AssignmentExpression|VariableDeclarator": function (path, state)
