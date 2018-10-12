@@ -1,7 +1,7 @@
 Track Usage Plugin
 ==================
 
-This is an experimental babel plugin that tracks the usage of a set of configured modules.
+This is an experimental babel plugin that tracks the usage of a set of configured modules. It supports both ES5 and ES6 import syntax.
 
 Usage
 -----
@@ -11,7 +11,8 @@ npm install --save-dev babel-plugin-track-usage
 ```
 
 The module will recognize requires of the configured modules in the transpiled babel modules and will collect
-statically analyzable calls to the declared functions.
+statically analyzable calls to the declared functions. Since 0.1.0 this also includes static template literals
+without expressions.
  
 
 Plugin Configuration
