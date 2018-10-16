@@ -8,7 +8,11 @@ function flattenRequires(requires)
     {
         if (requires.hasOwnProperty(varName))
         {
-            array.push(requires[varName]);
+            var r = requires[varName];
+            if (array.indexOf(r) < 0)
+            {
+                array.push(r);
+            }
         }
     }
 
