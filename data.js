@@ -2,16 +2,19 @@ var dataStore;
 
 function flattenRequires(requires)
 {
+    var varName, module;
     var array = [];
+    var added = {};
 
-    for (var varName in requires)
+    for (varName in requires)
     {
         if (requires.hasOwnProperty(varName))
         {
-            var r = requires[varName];
-            if (array.indexOf(r) < 0)
+            module = requires[varName];
+            if (!added[module])
             {
-                array.push(r);
+                added[module] = true;
+                array.push(module);
             }
         }
     }
