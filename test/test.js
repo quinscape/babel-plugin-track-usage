@@ -1,5 +1,5 @@
 var assert = require("power-assert");
-var babel = require("babel-core");
+var babel = require("@babel/core");
 var fs = require("fs");
 var path = require("path");
 
@@ -43,10 +43,10 @@ var OPTIONS = {
                     varArgs: 2
                 }
             },
-            debug: false
+            debug: false,
+            sourceRoot: "test-modules/"
         }]
-    ],
-    sourceRoot: "./test-modules/"
+    ]
 };
 
 function transform(relPath)
@@ -71,7 +71,6 @@ describe("Track Usage Plugin", function ()
 
             var usages = Data.get().usages;
             //console.log(JSON.stringify(usages, null, 2));
-            assert(usages['./mod-fn-es5'].module === "mod-fn-es5");
             assert(usages['./mod-fn-es5'].requires[0] === "./service/moduleFn");
             assert(usages['./mod-fn-es5'].requires[1] === "./service/nonVarMod");
 
@@ -99,7 +98,6 @@ describe("Track Usage Plugin", function ()
             var usages = Data.get().usages;
             //console.log(JSON.stringify(usages, null, 2));
 
-            assert(usages['./member-fn-es5'].module === "member-fn-es5");
             assert(usages['./member-fn-es5'].requires[0] === "./service/lookup");
             assert.deepEqual(
                 usages['./member-fn-es5'].calls.lookup,
@@ -128,7 +126,6 @@ describe("Track Usage Plugin", function ()
 
             var usages = Data.get().usages;
             //console.log(JSON.stringify(usages, null, 2));
-            assert(usages['./mod-fn-es6'].module === "mod-fn-es6");
             assert(usages['./mod-fn-es6'].requires[0] === "./service/moduleFn");
             assert(usages['./mod-fn-es6'].requires[1] === "./service/nonVarMod");
 
@@ -155,7 +152,6 @@ describe("Track Usage Plugin", function ()
             var usages = Data.get().usages;
             //console.log(JSON.stringify(usages, null, 2));
 
-            assert(usages['./member-fn-es6'].module === "member-fn-es6");
             assert(usages['./member-fn-es6'].requires[0] === "./service/lookup");
 
             assert.deepEqual(
@@ -182,7 +178,6 @@ describe("Track Usage Plugin", function ()
             var usages = Data.get().usages;
             //console.log(JSON.stringify(usages, null, 2));
 
-            assert(usages['./member-fn-es6-2'].module === "member-fn-es6-2");
             assert(usages['./member-fn-es6-2'].requires[0] === "./service/lookup");
             assert.deepEqual(
                 usages['./member-fn-es6-2'].calls.lookup,
@@ -207,7 +202,6 @@ describe("Track Usage Plugin", function ()
             var usages = Data.get().usages;
             //console.log(JSON.stringify(usages, null, 2));
 
-            assert(usages['./member-fn-es6-alias'].module === "member-fn-es6-alias");
             assert(usages['./member-fn-es6-alias'].requires[0] === "./service/lookup");
             assert.deepEqual(
                 usages['./member-fn-es6-alias'].calls.lookup,
@@ -282,7 +276,6 @@ describe("Track Usage Plugin", function ()
 
         var usages = Data.get().usages;
         //console.log(JSON.stringify(usages, null, 2));
-        assert(usages['./sub/mod-fn-es6'].module === "sub/mod-fn-es6");
         assert(usages['./sub/mod-fn-es6'].requires[0] === "./service/moduleFn");
         assert(usages['./sub/mod-fn-es6'].requires[1] === "./service/nonVarMod");
 
@@ -309,7 +302,6 @@ describe("Track Usage Plugin", function ()
         var usages = Data.get().usages;
         //console.log(JSON.stringify(usages, null, 2));
 
-        assert(usages['./member-fn-es6-template'].module === "member-fn-es6-template");
         assert(usages['./member-fn-es6-template'].requires[0] === "./service/lookup");
 
         assert.deepEqual(

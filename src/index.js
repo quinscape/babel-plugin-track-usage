@@ -7,6 +7,8 @@ var Data = require("../data");
 
 function strip(path, sourceRoot)
 {
+    //console.log("STRIP", path, sourceRoot);
+
     if (sourceRoot)
     {
         if (path.indexOf(sourceRoot) !== 0)
@@ -179,7 +181,9 @@ module.exports = function (t) {
      */
     function getRelativeModuleName(opts)
     {
-        var root = opts.sourceRoot;
+        //console.log("getRelativeModuleName", opts.sourceRoot);
+
+        var root = opts.root || opts.sourceRoot;
         if (!root)
         {
             return null;
@@ -317,7 +321,7 @@ module.exports = function (t) {
                 }
 
                 var data = Data._internal()["./" + relative] = {
-                    module: module,
+                    //module: module,
                     requires: {},
                     calls: {}
                 };
@@ -354,7 +358,7 @@ module.exports = function (t) {
 
                 if (state.opts.debug)
                 {
-                    console.log("Analy  sing './" + module + "'");
+                    console.log("Analysing './" + module + "'");
                 }
             },
             "AssignmentExpression|VariableDeclarator": function (path, state) {
@@ -404,6 +408,11 @@ module.exports = function (t) {
             "CallExpression": function (path, state) {
                 var pluginOpts = state.opts;
                 var node = path.node;
+
+                if (!path.hub)
+                {
+                    return;
+                }
 
                 var module = getRelativeModuleName(path.hub.file.opts);
                 if (!module)
