@@ -1,6 +1,6 @@
-//noinspection JSFileReferences
+//noinspection JSFileReferences,JSAnnotator
 import { thing as th } from './service/lookup';
-//noinspection JSFileReferences
+//noinspection JSFileReferences,JSAnnotator
 import { nonvar as nv } from './service/lookup';
 var a = 123;
 var b = th('Bar');

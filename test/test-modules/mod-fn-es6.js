@@ -1,6 +1,6 @@
-//noinspection JSFileReferences
+//noinspection JSFileReferences,JSAnnotator
 import moduleFn from './service/moduleFn';
-//noinspection JSFileReferences
+//noinspection JSFileReferences,JSAnnotator
 import nonvar from './service/nonVarMod';
 var a = 123;
 var b = moduleFn('Foo');

@@ -1,6 +1,6 @@
-//noinspection JSFileReferences
+//noinspection JSFileReferences,JSAnnotator
 import multi, { multiVar } from './service/multi';
-//noinspection JSFileReferences
+//noinspection JSFileReferences,JSAnnotator
 import { multiVar2 } from './service/multi2';
 
 const b = multi('Foo', 1);
