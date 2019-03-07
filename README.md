@@ -42,8 +42,10 @@ The *"module"* prop is a module location relative to babel sourceRoot.
 The *"fn"* prop is either empty if the module is called as function itself or fn contains the name of the method to invoke on the module.
 
 If the *"varArgs"* prop is set to true, the method can have additional parameters to the first statically analyzable one.
+It can also be set to a numeric value specifying how many arguments are captured (`true` is the same as `1`).
 
-All methods calls are identified by their first parameter, which needs to be a javascript literal at this point.
+All methods calls are identified by a deep-equality comparison of their arguments, which needs to be a javascript literals or object
+expressions containing literals.
 
 The *"debug"* plugin option causes the extraction process to log debugging information if set to true.
 
@@ -69,7 +71,7 @@ can be used to access the collected data will contain a "usages" prop with one p
             "module": "components/Grid",
             "requires": [ "react", "classnames", "./service/i18n"],
             "calls": {
-                "i18n": ["No Rows"]
+                "i18n": [["No Rows"]]
             }
         }
     }
@@ -84,7 +86,7 @@ The "requires" prop contains a array of modules required by this module. The mod
 required out of node_modules and again relative to source root for relative requires. This is exactly the format of the 
 keys of the "usages" map. This can be used to track transitive call dependencies.
 
-The calls prop contains a mapping from the configured logical names of our methods to an array first argument values 
+The calls prop contains a mapping from the configured logical names of our methods to an array or argument arrays 
 that are called in the module.
 
 # Example with Webpack

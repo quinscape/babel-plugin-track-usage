@@ -22,29 +22,6 @@ function flattenRequires(requires)
     return array;
 }
 
-function flattenCalls(calls)
-{
-    var out = {};
-    for (var name in calls)
-    {
-        if (calls.hasOwnProperty(name))
-        {
-            var array = [];
-            var map = calls[name];
-            for (var arg in map)
-            {
-                if (map.hasOwnProperty(arg))
-                {
-                    array.push(arg);
-                }
-            }
-
-            out[name] = array;
-        }
-    }
-
-    return out;
-}
 var DataStore = {
     _internal: function ()
     {
@@ -72,7 +49,7 @@ var DataStore = {
                 cleaned[module] = {
                     module: e.module,
                     requires: flattenRequires(e.requires),
-                    calls: flattenCalls(e.calls)
+                    calls: e.calls
                 }
 
             }

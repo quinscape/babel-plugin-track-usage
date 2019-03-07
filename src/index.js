@@ -1,6 +1,7 @@
 var nodeJsPath = require("path");
 var fs = require("fs");
 //var dump = require("./dump");
+var deepEqual = require("deep-equal");
 
 var Data = require("../data");
 
@@ -18,10 +19,23 @@ function strip(path, sourceRoot)
     return path;
 }
 
-
 module.exports = function (t) {
 
     t = t.types;
+
+    function insert(set, value)
+    {
+        for (var i = 0; i < set.length; i++)
+        {
+            var v = set[i];
+            if (deepEqual(v, value))
+            {
+                return;
+            }
+        }
+
+        set.push(value);
+    }
 
     function recordCall(data, node, memberCall, importedFnCall)
     {
@@ -33,8 +47,7 @@ module.exports = function (t) {
             var e = array[i];
             var tf = data._config.trackedFunctions[e.name];
 
-
-            if ( (memberCall && tf.fn) || (!memberCall && !tf.fn) || (!memberCall && importedFnCall && tf.fn))
+            if ((memberCall && tf.fn) || (!memberCall && !tf.fn) || (!memberCall && importedFnCall && tf.fn))
             {
                 if (data._config.debug)
                 {
@@ -43,51 +56,64 @@ module.exports = function (t) {
 
                 if (!tf.fn || importedFnCall || e.expr(callee))
                 {
+                    var args = node.arguments;
                     var varArgs = tf.varArgs;
-                    if (node.arguments.length === 1 || (varArgs && node.arguments.length >= 1))
+
+                    var argsEnd = Math.min(
+                        args.length,
+                        varArgs ? (
+                            typeof varArgs === "number" && varArgs > 0 ? varArgs : 1
+                        ) : Infinity
+                    );
+
+                    // if (node.arguments.length === 1 || (varArgs && node.arguments.length >= 1))
+                    // {
+                    record = data.calls[e.name];
+                    if (!record)
                     {
-                        record = data.calls[e.name];
-                        if (!record)
+                        record = [];
+                        data.calls[e.name] = record;
+                    }
+
+                    var values = [];
+
+
+                    var allEvaluated = true;
+                    for (var j = 0; j < argsEnd; j++)
+                    {
+                        var evaluated = staticEval(
+                            args[j]
+                        );
+                        if (evaluated === undefined)
                         {
-                            record = {};
-                            data.calls[e.name] = record;
+                            allEvaluated = false;
+                            break;
                         }
-                        var value, firstArg = node.arguments[0];
 
-                        if ( t.isTemplateLiteral(firstArg))
+                        values.push(
+                            evaluated
+                        );
+                    }
+
+                    //console.log("EVAL", node.arguments , " => ", values);
+
+                    if (values.length > 0 && allEvaluated)
+                    {
+                        if (data._config.debug)
                         {
-                            if (firstArg.expressions.length > 0)
-                            {
-                                throw new Error("Extracted template literals can't contain expressions");
-                            }
-
-                            value = firstArg.quasis[0].value.raw;
-                            record[value] = true;
+                            console.log("Record '" + values + "' for " + e.name);
                         }
-                        else
-                        {
-                            value = staticEval(firstArg);
-
-                            //console.log("EVAL", node.arguments[0] , " => ", value);
-
-                            if (value !== undefined)
-                            {
-                                if (data._config.debug)
-                                {
-                                    console.log("Record '" + value + "' for " + e.name);
-                                }
-                                record[value] = true;
-                            }
-                            else if (data._config.debug)
-                            {
-                                console.log("Value evaluated to undefined");
-                            }
-                        }
+                        insert(record, values);
                     }
                     else if (data._config.debug)
                     {
-                        console.log("Number of arguments doesn't match");
+                        console.log("Value evaluated to undefined");
                     }
+                    // }
+                    // else if (data._config.debug)
+                    // {
+                    //     console.log("Number of arguments doesn't match");
+                    // }
                 }
             }
         }
@@ -95,9 +121,53 @@ module.exports = function (t) {
 
     function staticEval(node)
     {
-        if (t.isLiteral(node))
+        if (t.isTemplateLiteral(node))
+        {
+            if (node.expressions.length > 0)
+            {
+                throw new Error("Extracted template literals can't contain expressions");
+            }
+
+            return node.quasis[0].value.raw;
+        }
+        else if (t.isLiteral(node))
         {
             return node.value;
+        }
+        else if (t.isObjectExpression(node))
+        {
+            var properties = node.properties;
+            var out = {};
+            for (var i = 0; i < properties.length; i++)
+            {
+                var key, value, property = properties[i];
+                if (t.isLiteral(property.key))
+                {
+                    key = property.key.value;
+                }
+                else if (t.isIdentifier(property.key))
+                {
+                    key = property.key.name;
+                }
+                else
+                {
+                    // computed property -> bail
+                    return undefined;
+                }
+
+                var evaluatedValue = staticEval(property.value);
+
+                if (evaluatedValue !== undefined)
+                {
+                    out[key] = evaluatedValue;
+                }
+                else
+                {
+                    // non-literal value -> bail
+                    return undefined;
+                }
+            }
+            return out;
         }
         return undefined;
     }
@@ -188,25 +258,21 @@ module.exports = function (t) {
                         if (importedName === fn)
                         {
                             data._config.isMemberCall[varName] = true;
-                        }
-                        else
+                        } else
                         {
-                           continue;
+                            continue;
                         }
-                    }
-                    else
+                    } else
                     {
                         data._config.hasMemberCall[varName] = true;
                     }
 
-                }
-                else
+                } else
                 {
                     if (!importedName)
                     {
                         data._config.hasModuleCall[varName] = true;
-                    }
-                    else
+                    } else
                     {
                         continue;
                     }
@@ -229,8 +295,7 @@ module.exports = function (t) {
     };
     return {
         visitor: {
-            "Program": function (path, state)
-            {
+            "Program": function (path, state) {
                 //dump(path.node);
 
                 var pluginOpts = state.opts;
@@ -270,8 +335,7 @@ module.exports = function (t) {
                         {
                             array = [name];
                             moduleLookup[tf.module] = array;
-                        }
-                        else
+                        } else
                         {
                             array.push(name);
                         }
@@ -293,8 +357,7 @@ module.exports = function (t) {
                     console.log("Analy  sing './" + module + "'");
                 }
             },
-            "AssignmentExpression|VariableDeclarator": function (path, state)
-            {
+            "AssignmentExpression|VariableDeclarator": function (path, state) {
                 //dir("state", state);
                 var pluginOpts = state.opts;
                 var node = path.node;
@@ -327,8 +390,7 @@ module.exports = function (t) {
                 {
                     left = node.left;
                     right = node.right;
-                }
-                else if (nodeIsVariableDeclarator)
+                } else if (nodeIsVariableDeclarator)
                 {
                     left = node.id;
                     right = node.init;
@@ -339,8 +401,7 @@ module.exports = function (t) {
                     trackVar(data, state, left.name, right.arguments[0].value, null, module);
                 }
             },
-            "CallExpression": function (path, state)
-            {
+            "CallExpression": function (path, state) {
                 var pluginOpts = state.opts;
                 var node = path.node;
 
@@ -371,16 +432,15 @@ module.exports = function (t) {
                         console.log("Module call for variable " + callee.name + "");
                     }
                     recordCall(data, node, false, false);
-                }
-                else if (t.isIdentifier(callee) && data._config.isMemberCall[callee.name])
+                } else if (t.isIdentifier(callee) && data._config.isMemberCall[callee.name])
                 {
                     if (state.opts.debug)
                     {
                         console.log("Imported member call for variable " + callee.name + "");
                     }
                     recordCall(data, node, false, true);
-                }
-                else if (t.isMemberExpression(callee) && t.isIdentifier(callee.object) && data._config.hasMemberCall[callee.object.name])
+                } else if (t.isMemberExpression(callee) && t.isIdentifier(
+                    callee.object) && data._config.hasMemberCall[callee.object.name])
                 {
                     if (state.opts.debug)
                     {
@@ -389,11 +449,9 @@ module.exports = function (t) {
                     recordCall(data, node, true, false);
                 }
             },
-            "ImportDeclaration" : function(path, state)
-            {
+            "ImportDeclaration": function (path, state) {
                 var i, node = path.node, specifier;
                 var pluginOpts = state.opts;
-
 
                 var module = getRelativeModuleName(path.hub.file.opts);
                 if (!module)
@@ -416,8 +474,7 @@ module.exports = function (t) {
                     if (t.isImportDefaultSpecifier(specifier))
                     {
                         trackVar(data, state, specifier.local.name, node.source.value, null, module);
-                    }
-                    else if (t.isImportSpecifier(specifier))
+                    } else if (t.isImportSpecifier(specifier))
                     {
                         trackVar(data, state, specifier.local.name, node.source.value, specifier.imported.name, module);
 
