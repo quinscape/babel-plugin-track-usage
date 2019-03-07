@@ -202,7 +202,14 @@ module.exports = function (t) {
                 }
                 else
                 {
-                    data._config.hasModuleCall[varName] = true;
+                    if (!importedName)
+                    {
+                        data._config.hasModuleCall[varName] = true;
+                    }
+                    else
+                    {
+                        continue;
+                    }
                 }
 
                 out.push({
