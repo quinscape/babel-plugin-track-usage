@@ -75,12 +75,20 @@ describe("Track Usage Plugin", function ()
             assert(usages['./mod-fn-es5'].requires[0] === "./service/moduleFn");
             assert(usages['./mod-fn-es5'].requires[1] === "./service/nonVarMod");
 
-            assert(usages['./mod-fn-es5'].calls.moduleFn.length === 2);
-            assert(usages['./mod-fn-es5'].calls.moduleFn[0][0] === "Foo");
-            assert(usages['./mod-fn-es5'].calls.moduleFn[1][0] === "NotIgnored");
+            assert.deepEqual(
+                usages['./mod-fn-es5'].calls.moduleFn,
+                [
+                    ["Foo"],
+                    ["NotIgnored"]
+                ]
+            );
+            assert.deepEqual(
+                usages['./mod-fn-es5'].calls.nonVar,
+                [
+                    ["A"]
+                ]
+            );
 
-            assert(usages['./mod-fn-es5'].calls.nonVar.length === 1);
-            assert(usages['./mod-fn-es5'].calls.nonVar[0][0] === "A");
         });
 
         it("detects member functions", function ()
@@ -93,12 +101,20 @@ describe("Track Usage Plugin", function ()
 
             assert(usages['./member-fn-es5'].module === "member-fn-es5");
             assert(usages['./member-fn-es5'].requires[0] === "./service/lookup");
-            assert(usages['./member-fn-es5'].calls.lookup.length === 2);
-            assert(usages['./member-fn-es5'].calls.lookup[0][0] === "Bar");
-            assert(usages['./member-fn-es5'].calls.lookup[1][0] === "Present");
+            assert.deepEqual(
+                usages['./member-fn-es5'].calls.lookup,
+                [
+                    ["Bar"],
+                    ["Present"]
+                ]
+            );
 
-            assert(usages['./member-fn-es5'].calls.nvLookup.length === 1);
-            assert(usages['./member-fn-es5'].calls.nvLookup[0][0] === "A");
+            assert.deepEqual(
+                usages['./member-fn-es5'].calls.nvLookup,
+                [
+                    ["A"]
+                ]
+            );
         })
 
     });
@@ -116,12 +132,19 @@ describe("Track Usage Plugin", function ()
             assert(usages['./mod-fn-es6'].requires[0] === "./service/moduleFn");
             assert(usages['./mod-fn-es6'].requires[1] === "./service/nonVarMod");
 
-            assert(usages['./mod-fn-es6'].calls.moduleFn.length === 2);
-            assert(usages['./mod-fn-es6'].calls.moduleFn[0][0] === "Foo");
-            assert(usages['./mod-fn-es6'].calls.moduleFn[1][0] === "NotIgnored");
-
-            assert(usages['./mod-fn-es6'].calls.nonVar.length === 1);
-            assert(usages['./mod-fn-es6'].calls.nonVar[0][0] === "A");
+            assert.deepEqual(
+                usages['./mod-fn-es6'].calls.moduleFn,
+                [
+                    ["Foo"],
+                    ["NotIgnored"]
+                ]
+            );
+            assert.deepEqual(
+                usages['./mod-fn-es6'].calls.nonVar,
+                [
+                    ["A"]
+                ]
+            );
         });
 
         it("detects member functions", function ()
@@ -134,13 +157,22 @@ describe("Track Usage Plugin", function ()
 
             assert(usages['./member-fn-es6'].module === "member-fn-es6");
             assert(usages['./member-fn-es6'].requires[0] === "./service/lookup");
-            assert(usages['./member-fn-es6'].calls.lookup.length === 2);
-            assert(usages['./member-fn-es6'].calls.lookup[0][0] === "Bar");
-            assert(usages['./member-fn-es6'].calls.lookup[1][0] === "Present");
 
-            assert(usages['./member-fn-es6'].calls.nvLookup.length === 1);
-            assert(usages['./member-fn-es6'].calls.nvLookup[0][0] === "A");
-        })
+            assert.deepEqual(
+                usages['./member-fn-es6'].calls.lookup,
+                [
+                    ["Bar"],
+                    ["Present"]
+                ]
+            );
+
+            assert.deepEqual(
+                usages['./member-fn-es6'].calls.nvLookup,
+                [
+                    ["A"]
+                ]
+            );
+        });
 
         it("detects member functions with variable binding", function ()
         {
@@ -152,13 +184,20 @@ describe("Track Usage Plugin", function ()
 
             assert(usages['./member-fn-es6-2'].module === "member-fn-es6-2");
             assert(usages['./member-fn-es6-2'].requires[0] === "./service/lookup");
-            assert(usages['./member-fn-es6-2'].calls.lookup.length === 2);
-            assert(usages['./member-fn-es6-2'].calls.lookup[0][0] === "Bar");
-            assert(usages['./member-fn-es6-2'].calls.lookup[1][0] === "Present");
-
-            assert(usages['./member-fn-es6-2'].calls.nvLookup.length === 1);
-            assert(usages['./member-fn-es6-2'].calls.nvLookup[0][0] === "A");
-        })
+            assert.deepEqual(
+                usages['./member-fn-es6-2'].calls.lookup,
+                [
+                    ["Bar"],
+                    ["Present"]
+                ]
+            );
+            assert.deepEqual(
+                usages['./member-fn-es6-2'].calls.nvLookup,
+                [
+                    ["A"]
+                ]
+            );
+        });
 
         it("detects member functions with aliased binding", function ()
         {
@@ -170,12 +209,19 @@ describe("Track Usage Plugin", function ()
 
             assert(usages['./member-fn-es6-alias'].module === "member-fn-es6-alias");
             assert(usages['./member-fn-es6-alias'].requires[0] === "./service/lookup");
-            assert(usages['./member-fn-es6-alias'].calls.lookup.length === 2);
-            assert(usages['./member-fn-es6-alias'].calls.lookup[0][0] === "Bar");
-            assert(usages['./member-fn-es6-alias'].calls.lookup[1][0] === "Present");
-
-            assert(usages['./member-fn-es6-alias'].calls.nvLookup.length === 1);
-            assert(usages['./member-fn-es6-alias'].calls.nvLookup[0][0] === "A");
+            assert.deepEqual(
+                usages['./member-fn-es6-alias'].calls.lookup,
+                [
+                    ["Bar"],
+                    ["Present"]
+                ]
+            );
+            assert.deepEqual(
+                usages['./member-fn-es6-alias'].calls.nvLookup,
+                [
+                    ["A"]
+                ]
+            );
         })
 
         it("detects multiple arguments", function ()
@@ -240,12 +286,20 @@ describe("Track Usage Plugin", function ()
         assert(usages['./sub/mod-fn-es6'].requires[0] === "./service/moduleFn");
         assert(usages['./sub/mod-fn-es6'].requires[1] === "./service/nonVarMod");
 
-        assert(usages['./sub/mod-fn-es6'].calls.moduleFn.length === 2);
-        assert(usages['./sub/mod-fn-es6'].calls.moduleFn[0][0] === "Foo");
-        assert(usages['./sub/mod-fn-es6'].calls.moduleFn[1][0] === "NotIgnored");
+        assert.deepEqual(
+            usages['./sub/mod-fn-es6'].calls.moduleFn,
+            [
+                ["Foo"],
+                ["NotIgnored"]
+            ]
+        );
 
-        assert(usages['./sub/mod-fn-es6'].calls.nonVar.length === 1);
-        assert(usages['./sub/mod-fn-es6'].calls.nonVar[0][0] === "A");
+        assert.deepEqual(
+            usages['./sub/mod-fn-es6'].calls.nonVar,
+            [
+                ["A"]
+            ]
+        );
     });
 
     it("supports template literals", function ()
@@ -253,15 +307,20 @@ describe("Track Usage Plugin", function ()
         transform("./test-modules/member-fn-es6-template.js");
 
         var usages = Data.get().usages;
-        console.log(JSON.stringify(usages, null, 2));
+        //console.log(JSON.stringify(usages, null, 2));
 
         assert(usages['./member-fn-es6-template'].module === "member-fn-es6-template");
         assert(usages['./member-fn-es6-template'].requires[0] === "./service/lookup");
-        assert(usages['./member-fn-es6-template'].calls.lookup.length === 1);
 
-        //console.log(JSON.stringify(usages['./member-fn-es6-template'].calls.lookup[0]));
-        assert(usages['./member-fn-es6-template'].calls.lookup[0][0] === "\n    Bar\n");
-    })
+        assert.deepEqual(
+            usages['./member-fn-es6-template'].calls.lookup,
+            [
+                [
+                    "\n    Bar\n"
+                ]
+            ]
+        );
+    });
 
     it("does not support template literals with expressions", function ()
     {
