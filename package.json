@@ -2,7 +2,7 @@
     "name": "babel-plugin-track-usage",
     "version": "0.2.0",
     "description": "Babel plugin to track calls to a configured set of modules",
-    "repository": "https://github.com/fforw/babel-plugin-track-usage.git",
+    "repository": "https://github.com/quinscape/babel-plugin-track-usage.git",
     "main": "src/index.js",
     "scripts": {
         "test": "mocha --require @babel/register -R spec test/",
@@ -16,7 +16,7 @@
     ],
     "author": "Sven Helmberger",
     "license": "Apache-2.0",
-    "homepage": "https://github.com/fforw/babel-plugin-track-usage",
+    "homepage": "https://github.com/quinscape/babel-plugin-track-usage",
     "dependencies": {
         "@babel/runtime": "^7.3.4",
         "deep-equal": "^1.0.1"
