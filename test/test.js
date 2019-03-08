@@ -245,7 +245,8 @@ describe("Track Usage Plugin", function ()
                             complex: true
                         }
                     }
-                ]
+                ],
+                []
             ]);
 
             assert.deepEqual(usages['./multi'].calls.multiVarArg, [

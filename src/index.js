@@ -99,7 +99,7 @@ module.exports = function (t) {
 
                     //console.log("EVAL", node.arguments , " => ", values);
 
-                    if (values.length > 0 && allEvaluated)
+                    if (allEvaluated)
                     {
                         if (data._config.debug)
                         {
