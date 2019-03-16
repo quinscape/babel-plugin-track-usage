@@ -123,6 +123,8 @@ module.exports = function (t) {
 
     function staticEval(node)
     {
+        var i, out, evaluatedValue;
+
         if (t.isTemplateLiteral(node))
         {
             if (node.expressions.length > 0)
@@ -136,13 +138,33 @@ module.exports = function (t) {
         {
             return node.value;
         }
+        else if (t.isArrayExpression(node))
+        {
+            var elements = node.elements;
+            out = new Array(elements.length);
+            for (i = 0; i < elements.length; i++)
+            {
+                evaluatedValue = staticEval(elements[i]);
+
+                if (evaluatedValue !== undefined)
+                {
+                    out[i] = evaluatedValue;
+                }
+                else
+                {
+                    // non-literal array element -> bail
+                    return undefined;
+                }
+            }
+            return out;
+        }
         else if (t.isObjectExpression(node))
         {
             var properties = node.properties;
-            var out = {};
-            for (var i = 0; i < properties.length; i++)
+            out = {};
+            for (i = 0; i < properties.length; i++)
             {
-                var key, value, property = properties[i];
+                var key, property = properties[i];
                 if (t.isLiteral(property.key))
                 {
                     key = property.key.value;
@@ -157,7 +179,7 @@ module.exports = function (t) {
                     return undefined;
                 }
 
-                var evaluatedValue = staticEval(property.value);
+                evaluatedValue = staticEval(property.value);
 
                 if (evaluatedValue !== undefined)
                 {

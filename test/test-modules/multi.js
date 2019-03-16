@@ -10,3 +10,5 @@ const e = multiVar('Qux', 'Quux', 4);
 const f = multiVar2('Bla', 'Fasel', 5);
 const g = multiVar2('Ignored',  'Not Literal' + 5);
 const h = multi();
+const i = multi('Blubb', { values: ["A", "B", "C"]});
+const j = multi('JustArray', ["1", "2", "3"]);

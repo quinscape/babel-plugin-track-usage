@@ -246,7 +246,21 @@ describe("Track Usage Plugin", function ()
                         }
                     }
                 ],
-                []
+                [],
+                [
+                    "Blubb",
+                    {
+                        values: [
+                            "A",
+                            "B",
+                            "C"
+                        ]
+                    }
+                ],
+                [
+                    'JustArray', ["1", "2", "3"]
+                ]
+
             ]);
 
             assert.deepEqual(usages['./multi'].calls.multiVarArg, [
