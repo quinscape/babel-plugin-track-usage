@@ -1,6 +1,6 @@
 {
     "name": "babel-plugin-track-usage",
-    "version": "0.2.2",
+    "version": "0.2.3",
     "description": "Babel plugin to track calls to a configured set of modules",
     "repository": "https://github.com/quinscape/babel-plugin-track-usage.git",
     "main": "src/index.js",
