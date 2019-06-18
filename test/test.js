@@ -259,6 +259,9 @@ describe("Track Usage Plugin", function ()
                 ],
                 [
                     'JustArray', ["1", "2", "3"]
+                ],
+                [
+                    'Blafusel', { value: null}
                 ]
 
             ]);

@@ -134,6 +134,10 @@ module.exports = function (t) {
 
             return node.quasis[0].value.raw;
         }
+        else if (t.isNullLiteral(node))
+        {
+            return null;
+        }
         else if (t.isLiteral(node))
         {
             return node.value;

@@ -12,3 +12,4 @@ const g = multiVar2('Ignored',  'Not Literal' + 5);
 const h = multi();
 const i = multi('Blubb', { values: ["A", "B", "C"]});
 const j = multi('JustArray', ["1", "2", "3"]);
+const k = multi('Blafusel', { value: null});
