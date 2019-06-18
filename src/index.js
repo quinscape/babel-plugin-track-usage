@@ -5,8 +5,14 @@ var deepEqual = require("deep-equal");
 
 var Data = require("../data");
 
+var SLASH_RE = new RegExp("\\" + nodeJsPath.sep, "g");
 function strip(path, sourceRoot)
 {
+    if (nodeJsPath.sep !== "/")
+    {
+        path = path.replace( SLASH_RE, "/")
+    }
+
     //console.log("STRIP", path, sourceRoot);
 
     if (sourceRoot)
