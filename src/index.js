@@ -90,7 +90,8 @@ module.exports = function (t) {
                     for (var j = 0; j < argsEnd; j++)
                     {
                         var evaluated = staticEval(
-                            args[j]
+                            args[j],
+                            tf.allowIdentifier
                         );
                         if (evaluated === undefined)
                         {
@@ -127,7 +128,7 @@ module.exports = function (t) {
         }
     }
 
-    function staticEval(node)
+    function staticEval(node, allowIdentifier)
     {
         var i, out, evaluatedValue;
 
@@ -154,7 +155,7 @@ module.exports = function (t) {
             out = new Array(elements.length);
             for (i = 0; i < elements.length; i++)
             {
-                evaluatedValue = staticEval(elements[i]);
+                evaluatedValue = staticEval(elements[i], allowIdentifier);
 
                 if (evaluatedValue !== undefined)
                 {
@@ -189,7 +190,7 @@ module.exports = function (t) {
                     return undefined;
                 }
 
-                evaluatedValue = staticEval(property.value);
+                evaluatedValue = staticEval(property.value, allowIdentifier);
 
                 if (evaluatedValue !== undefined)
                 {
@@ -203,6 +204,11 @@ module.exports = function (t) {
             }
             return out;
         }
+        else if (allowIdentifier && t.isIdentifier(node))
+        {
+            return { __identifier: node.name };
+        }
+
         return undefined;
     }
 

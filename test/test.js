@@ -37,6 +37,12 @@ var OPTIONS = {
                     fn: "multiVar",
                     varArgs: 2
                 },
+                multiVarArgIdent: {
+                    module: "./service/multi",
+                    fn: "multiIdent",
+                    varArgs: 2,
+                    allowIdentifier: true
+                },
                 multiVarArg2: {
                     module: "./service/multi2",
                     fn: "multiVar2",
@@ -280,9 +286,12 @@ describe("Track Usage Plugin", function ()
                 ]
             ]);
 
-
+            assert.deepEqual(usages['./multi'].calls.multiVarArgIdent, [
+                [
+                    { __identifier: "MyIdent" }, { value: "abc"}
+                ]
+            ]);
             //console.log(JSON.stringify(usages, null, 2));
-
         })
 
     });

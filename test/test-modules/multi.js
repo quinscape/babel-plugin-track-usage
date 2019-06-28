@@ -1,7 +1,9 @@
 //noinspection JSFileReferences,JSAnnotator
-import multi, { multiVar } from './service/multi';
+import multi, { multiVar, multiIdent } from './service/multi';
 //noinspection JSFileReferences,JSAnnotator
 import { multiVar2 } from './service/multi2';
+//noinspection JSFileReferences,JSAnnotator
+import MyIdent from './service/Identifier';
 
 const b = multi('Foo', 1);
 const c = multi('Bar', "xxx", 2);
@@ -13,3 +15,4 @@ const h = multi();
 const i = multi('Blubb', { values: ["A", "B", "C"]});
 const j = multi('JustArray', ["1", "2", "3"]);
 const k = multi('Blafusel', { value: null});
+const l = multiIdent( MyIdent , { value: "abc"});
