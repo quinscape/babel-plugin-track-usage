@@ -1,23 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="BookmarkManager">
-    <bookmark url="file://$PROJECT_DIR$/src/index.js" line="288" mnemonic="9" />
-  </component>
   <component name="ChangeListManager">
     <list default="true" id="38bcee5a-73a2-4c13-856c-28600b880d88" name="Default" comment="Fix debug logging &#10;&#10;That branch is member calls (module.fn)">
-      <change afterPath="$PROJECT_DIR$/.idea/runConfigurations/Track_Usage_Plugin.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/test-modules/multi.js" beforeDir="false" afterPath="$PROJECT_DIR$/test/test-modules/multi.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/test.js" beforeDir="false" afterPath="$PROJECT_DIR$/test/test.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/webpack/track-usage-plugin.js" beforeDir="false" afterPath="$PROJECT_DIR$/webpack/track-usage-plugin.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
     </list>
-    <ignored path="babel-plugin-track-usage.iws" />
-    <ignored path=".idea/workspace.xml" />
-    <ignored path="$PROJECT_DIR$/out/" />
-    <ignored path=".idea/dataSources.local.xml" />
-    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -29,46 +19,6 @@
   <component name="FavoritesManager">
     <favorites_list name="babel-plugin-track-usage" />
   </component>
-  <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/test/test.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2212">
-              <caret line="263" column="45" selection-start-line="263" selection-start-column="45" selection-end-line="263" selection-end-column="45" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/package.json">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="315">
-              <caret line="21" column="29" selection-start-line="21" selection-start-column="29" selection-end-line="21" selection-end-column="29" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/index.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="277">
-              <caret line="140" selection-start-line="140" selection-end-line="140" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/test/test-modules/multi.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="225">
-              <caret line="15" selection-start-line="14" selection-end-line="15" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
-  </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
@@ -76,82 +26,16 @@
       </list>
     </option>
   </component>
-  <component name="FindInProjectRecents">
-    <findStrings>
-      <find>relRequired</find>
-      <find>data.requires</find>
-      <find>required</find>
-      <find>tarc</find>
-      <find>trackVar</find>
-      <find>pluginOpts</find>
-      <find>trackedFunctions</find>
-      <find>hasMemberCall</find>
-      <find>expr</find>
-      <find>recordCall</find>
-      <find>moduleLookup</find>
-      <find>isMemberCall</find>
-      <find>trackedByVar</find>
-      <find>skip</find>
-      <find>opts.ou</find>
-      <find>output</find>
-      <find>Anal</find>
-      <find>module</find>
-      <find>member-fn-es6-alias</find>
-      <find>member-fn-es6</find>
-      <find>Analy</find>
-      <find>member-fn-es6-2</find>
-      <find>append</find>
-      <find>indent(</find>
-      <find>CallExpression</find>
-      <find>AssignmentExpression</find>
-      <find>ump</find>
-      <find>dump</find>
-      <find>JustArray</find>
-      <find>t.isArr</find>
-    </findStrings>
-    <replaceStrings>
-      <replace>Object.assign</replace>
-      <replace>varName</replace>
-      <replace>modulePath</replace>
-      <replace>mod-fn-es5</replace>
-      <replace>member-fn-es5</replace>
-      <replace>member-fn-es6</replace>
-      <replace>member-fn-es6-alias</replace>
-      <replace>sub/mod-fn-es6</replace>
-      <replace>mod-fn-es6</replace>
-      <replace>member-fn-es6-2</replace>
-      <replace>member-fn-es6-template</replace>
-      <replace>push</replace>
-      <replace>indent( buff,</replace>
-    </replaceStrings>
-  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="IdeDocumentHistory">
-    <option name="CHANGED_PATHS">
-      <list>
-        <option value="$PROJECT_DIR$/test.js" />
-        <option value="$PROJECT_DIR$/test.json" />
-        <option value="$PROJECT_DIR$/data.js" />
-        <option value="$PROJECT_DIR$/README.md" />
-        <option value="$PROJECT_DIR$/.babelrc" />
-        <option value="$PROJECT_DIR$/test/test-modules/mod-fn-es5.js" />
-        <option value="$PROJECT_DIR$/test/test-modules/member-fn-es5.js" />
-        <option value="$PROJECT_DIR$/test/test-modules/mod-fn-es6.js" />
-        <option value="$PROJECT_DIR$/test/test-modules/member-fn-es6.js" />
-        <option value="$PROJECT_DIR$/test/test-modules/member-fn-es6-alias.js" />
-        <option value="$PROJECT_DIR$/test/test-modules/sub/mod-fn-es6.js" />
-        <option value="$PROJECT_DIR$/test/test-modules/member-fn-es6-2.js" />
-        <option value="$PROJECT_DIR$/test/test-modules/member-fn-es6-template.js" />
-        <option value="$PROJECT_DIR$/test/test-modules/member-fn-es6-template2.js" />
-        <option value="$PROJECT_DIR$/src/dump.js" />
-        <option value="$PROJECT_DIR$/package.json" />
-        <option value="$PROJECT_DIR$/test/test-modules/multi.js" />
-        <option value="$PROJECT_DIR$/test/test.js" />
-        <option value="$PROJECT_DIR$/src/index.js" />
-      </list>
-    </option>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
   </component>
   <component name="JsFlowSettings">
     <service-enabled>true</service-enabled>
@@ -160,58 +44,11 @@
     <other-services-enabled>true</other-services-enabled>
     <auto-save>true</auto-save>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="y" value="27" />
-    <option name="width" value="1920" />
-    <option name="height" value="1053" />
-  </component>
-  <component name="ProjectView">
-    <navigator proportions="" version="1">
-      <foldersAlwaysOnTop value="true" />
-    </navigator>
-    <panes>
-      <pane id="PackagesPane" />
-      <pane id="Scope" />
-      <pane id="ProjectPane">
-        <subPane>
-          <expand>
-            <path>
-              <item name="babel-plugin-track-usage" type="b2602c69:ProjectViewProjectNode" />
-              <item name="babel-plugin-track-usage" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="babel-plugin-track-usage" type="b2602c69:ProjectViewProjectNode" />
-              <item name="babel-plugin-track-usage" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="babel-plugin-track-usage" type="b2602c69:ProjectViewProjectNode" />
-              <item name="babel-plugin-track-usage" type="462c0819:PsiDirectoryNode" />
-              <item name="test" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="babel-plugin-track-usage" type="b2602c69:ProjectViewProjectNode" />
-              <item name="babel-plugin-track-usage" type="462c0819:PsiDirectoryNode" />
-              <item name="test" type="462c0819:PsiDirectoryNode" />
-              <item name="test-modules" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="babel-plugin-track-usage" type="b2602c69:ProjectViewProjectNode" />
-              <item name="babel-plugin-track-usage" type="462c0819:PsiDirectoryNode" />
-              <item name="test" type="462c0819:PsiDirectoryNode" />
-              <item name="test-modules" type="462c0819:PsiDirectoryNode" />
-              <item name="sub" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="babel-plugin-track-usage" type="b2602c69:ProjectViewProjectNode" />
-              <item name="babel-plugin-track-usage" type="462c0819:PsiDirectoryNode" />
-              <item name="webpack" type="462c0819:PsiDirectoryNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
-    </panes>
+  <component name="JupyterTrust" id="42e04981-d4a5-452a-a52d-9946bdb86725" />
+  <component name="ProjectId" id="1PxuZoWtdTLd5cVghFZ7H2XPCUQ" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
     <property name="GoToClass.includeLibraries" value="false" />
@@ -223,9 +60,16 @@
     <property name="MemberChooser.sorted" value="false" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="javascript.nodejs.core.library.configured.version" value="8.16.0" />
+    <property name="javascript.nodejs.core.library.configured.version" value="14.17.6" />
+    <property name="javascript.nodejs.core.library.typings.version" value="14.17.6" />
     <property name="js-jscs-nodeInterpreter" value="/usr/local/bin/node" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../automaton-test" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="nodejs.mocha.mocha_node_package_dir" value="$PROJECT_DIR$/node_modules/mocha" />
     <property name="nodejs_interpreter_path" value="node" />
     <property name="nodejs_package_manager_path" value="yarn" />
@@ -243,27 +87,9 @@
       <recent name="$PROJECT_DIR$" />
     </key>
   </component>
-  <component name="RunDashboard">
-    <option name="ruleStates">
-      <list>
-        <RuleState>
-          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
-        </RuleState>
-        <RuleState>
-          <option name="name" value="StatusDashboardGroupingRule" />
-        </RuleState>
-      </list>
-    </option>
-  </component>
   <component name="RunManager" selected="Mocha.Track Usage Plugin">
     <configuration default="true" type="Applet">
       <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration default="true" type="Application" factoryName="Application">
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -296,6 +122,12 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration default="true" type="Application" factoryName="Application">
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration default="true" type="JUnit" factoryName="JUnit">
       <option name="TEST_OBJECT" value="class" />
       <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
@@ -303,36 +135,8 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType" factoryName="Kotlin script">
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
       <option name="filePath" />
-      <option name="vmParameters" />
-      <option name="alternativeJrePath" />
-      <option name="programParameters" />
-      <option name="passParentEnvs" value="true" />
-      <option name="workingDirectory" />
-      <option name="isAlternativeJrePathEnabled" value="false" />
-      <option name="VM_PARAMETERS" />
-      <option name="PROGRAM_PARAMETERS" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="WORKING_DIRECTORY" />
-      <module name="" />
-      <option name="filePath" />
-      <option name="vmParameters" />
-      <option name="alternativeJrePath" />
-      <option name="programParameters" />
-      <option name="passParentEnvs" value="true" />
-      <option name="workingDirectory" />
-      <option name="isAlternativeJrePathEnabled" value="false" />
-      <option name="VM_PARAMETERS" />
-      <option name="PROGRAM_PARAMETERS" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="WORKING_DIRECTORY" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -431,7 +235,6 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Mocha.Track Usage Plugin" />
         <item itemvalue="Mocha.Track Usage Plugin.supports template literals" />
         <item itemvalue="Mocha.Track Usage Tests" />
         <item itemvalue="Mocha.Track Usage Plugin.detects member functions" />
@@ -439,6 +242,7 @@
       </list>
     </recent_temporary>
   </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -464,107 +268,63 @@
       <workItem from="1539285909337" duration="8264000" />
       <workItem from="1539340127463" duration="4129000" />
       <workItem from="1560853995833" duration="393000" />
+      <workItem from="1561486711738" duration="1651000" />
+      <workItem from="1561722837548" duration="707000" />
+      <workItem from="1561729417040" duration="6185000" />
+      <workItem from="1566828128354" duration="99000" />
+      <workItem from="1600519084081" duration="740000" />
+      <workItem from="1600520528719" duration="2198000" />
+      <workItem from="1615929140955" duration="715000" />
+      <workItem from="1631037847879" duration="206000" />
     </task>
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="Track_Usage_Plugin_supports_template_literals - 2018.10.12 at 13h 52m 33s.xml">
-      <configuration name="Track Usage Plugin.supports template literals" configurationId="mocha-javascript-test-runner" />
-    </history-entry>
-    <history-entry file="Track_Usage_Plugin_supports_template_literals - 2018.10.12 at 13h 54m 11s.xml">
-      <configuration name="Track Usage Plugin.supports template literals" configurationId="mocha-javascript-test-runner" />
-    </history-entry>
-    <history-entry file="Track_Usage_Plugin_supports_template_literals - 2018.10.12 at 13h 54m 22s.xml">
-      <configuration name="Track Usage Plugin.supports template literals" configurationId="mocha-javascript-test-runner" />
-    </history-entry>
-    <history-entry file="Track_Usage_Plugin_supports_template_literals - 2018.10.12 at 13h 55m 08s.xml">
-      <configuration name="Track Usage Plugin.supports template literals" configurationId="mocha-javascript-test-runner" />
-    </history-entry>
-    <history-entry file="Track_Usage_Plugin_supports_template_literals - 2018.10.12 at 13h 56m 13s.xml">
-      <configuration name="Track Usage Plugin.supports template literals" configurationId="mocha-javascript-test-runner" />
-    </history-entry>
-    <history-entry file="Track_Usage_Plugin_supports_template_literals - 2018.10.12 at 13h 56m 27s.xml">
-      <configuration name="Track Usage Plugin.supports template literals" configurationId="mocha-javascript-test-runner" />
-    </history-entry>
-    <history-entry file="Track_Usage_Plugin - 2018.10.12 at 13h 57m 05s.xml">
+    <history-entry file="Track_Usage_Plugin - 2019.06.25 at 20h 20m 32s.xml">
       <configuration name="Track Usage Plugin" configurationId="mocha-javascript-test-runner" />
     </history-entry>
-    <history-entry file="Track_Usage_Plugin - 2018.10.12 at 13h 57m 53s.xml">
+    <history-entry file="Track_Usage_Plugin - 2019.06.25 at 20h 20m 58s.xml">
       <configuration name="Track Usage Plugin" configurationId="mocha-javascript-test-runner" />
     </history-entry>
-    <history-entry file="Track_Usage_Plugin - 2019.06.18 at 12h 33m 20s.xml">
+    <history-entry file="Track_Usage_Plugin - 2019.06.25 at 20h 22m 48s.xml">
       <configuration name="Track Usage Plugin" configurationId="mocha-javascript-test-runner" />
     </history-entry>
-    <history-entry file="Track_Usage_Plugin - 2019.06.18 at 12h 39m 07s.xml">
+    <history-entry file="Track_Usage_Plugin - 2019.06.25 at 20h 22m 55s.xml">
       <configuration name="Track Usage Plugin" configurationId="mocha-javascript-test-runner" />
     </history-entry>
-  </component>
-  <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="63765000" />
-  </component>
-  <component name="ToolWindowManager">
-    <frame x="0" y="25" width="1920" height="1055" extended-state="6" />
-    <editor active="true" />
-    <layout>
-      <window_info id="Project" order="0" visible="true" weight="0.2593184" />
-      <window_info id="Structure" order="1" weight="0.25" />
-      <window_info id="npm" order="2" side_tool="true" />
-      <window_info id="Designer" order="3" />
-      <window_info id="UI Designer" order="4" />
-      <window_info id="Favorites" order="5" side_tool="true" />
-      <window_info anchor="bottom" id="Docker" show_stripe_button="false" />
-      <window_info anchor="bottom" id="GraphQL" />
-      <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.32987553" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.32869378" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.39871383" />
-      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Version Control" order="7" />
-      <window_info anchor="bottom" id="Terminal" order="8" />
-      <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
-      <window_info anchor="bottom" id="Messages" order="10" weight="0.32987553" />
-      <window_info anchor="bottom" id="Database Changes" order="11" show_stripe_button="false" />
-      <window_info anchor="right" id="Maven" />
-      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
-      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info anchor="right" id="Palette" order="3" />
-      <window_info anchor="right" id="Database" order="4" />
-      <window_info anchor="right" id="Palette&#9;" order="5" />
-      <window_info anchor="right" id="Maven Projects" order="6" />
-    </layout>
-    <layout-to-restore>
-      <window_info active="true" id="Project" order="0" visible="true" weight="0.2603834" />
-      <window_info id="Structure" order="1" weight="0.25" />
-      <window_info id="npm" order="2" side_tool="true" />
-      <window_info id="Designer" order="3" />
-      <window_info id="UI Designer" order="4" />
-      <window_info id="Favorites" order="5" side_tool="true" />
-      <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.32987553" />
-      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.3290461" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.39871383" />
-      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Version Control" order="7" />
-      <window_info anchor="bottom" id="Terminal" order="8" />
-      <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
-      <window_info anchor="bottom" id="Messages" order="10" weight="0.32987553" />
-      <window_info anchor="bottom" id="Database Changes" order="11" show_stripe_button="false" />
-      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
-      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info anchor="right" id="Palette" order="3" />
-      <window_info anchor="right" id="Database" order="4" />
-      <window_info anchor="right" id="Palette&#9;" order="5" />
-      <window_info anchor="right" id="Maven Projects" order="6" />
-    </layout-to-restore>
+    <history-entry file="Track_Usage_Plugin - 2019.06.25 at 20h 24m 10s.xml">
+      <configuration name="Track Usage Plugin" configurationId="mocha-javascript-test-runner" />
+    </history-entry>
+    <history-entry file="Track_Usage_Plugin - 2019.06.25 at 20h 30m 27s.xml">
+      <configuration name="Track Usage Plugin" configurationId="mocha-javascript-test-runner" />
+    </history-entry>
+    <history-entry file="Track_Usage_Plugin - 2019.06.25 at 20h 31m 30s.xml">
+      <configuration name="Track Usage Plugin" configurationId="mocha-javascript-test-runner" />
+    </history-entry>
+    <history-entry file="Track_Usage_Plugin - 2019.06.25 at 20h 31m 58s.xml">
+      <configuration name="Track Usage Plugin" configurationId="mocha-javascript-test-runner" />
+    </history-entry>
+    <history-entry file="Track_Usage_Plugin - 2019.06.25 at 20h 32m 43s.xml">
+      <configuration name="Track Usage Plugin" configurationId="mocha-javascript-test-runner" />
+    </history-entry>
+    <history-entry file="Track_Usage_Plugin - 2019.06.28 at 13h 55m 10s.xml">
+      <configuration name="Track Usage Plugin" configurationId="mocha-javascript-test-runner" />
+    </history-entry>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="1" />
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="Vcs.Log.UiProperties">
     <option name="RECENTLY_FILTERED_USER_GROUPS">
@@ -583,12 +343,12 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/index.js</url>
-          <line>335</line>
+          <line>341</line>
           <option name="timeStamp" value="6" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/index.js</url>
-          <line>363</line>
+          <line>369</line>
           <option name="timeStamp" value="8" />
         </line-breakpoint>
       </breakpoints>
@@ -637,141 +397,6 @@
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
     </expressions>
-  </component>
-  <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/node_modules/babel-core/lib/api/browser.js" />
-    <entry file="file://$PROJECT_DIR$/node_modules/empower/gulpfile.js" />
-    <entry file="file://$PROJECT_DIR$/README.md">
-      <provider editor-type-id="text-editor">
-        <state>
-          <caret line="78" selection-start-line="78" selection-end-line="78" />
-        </state>
-      </provider>
-      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="SPLIT">
-          <first_editor relative-caret-position="1335">
-            <caret line="89" selection-start-line="89" selection-end-line="89" />
-          </first_editor>
-          <second_editor />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/data.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="615">
-          <caret line="41" column="13" selection-start-line="41" selection-start-column="4" selection-end-line="41" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test/test-modules/member-fn-es5.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="6" selection-start-line="6" selection-end-line="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test/test-modules/mod-fn-es6.js">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test/test-modules/sub/mod-fn-es6.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="45">
-          <caret line="3" column="22" selection-start-line="3" selection-start-column="22" selection-end-line="3" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test/test-modules/member-fn-es6.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="30">
-          <caret line="2" column="12" selection-start-line="2" selection-start-column="12" selection-end-line="2" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test/test-modules/member-fn-es6-2.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="9" selection-start-line="9" selection-end-line="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test/test-modules/mod-fn-es5.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="7" selection-start-line="7" selection-end-line="7" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.babelrc">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="30">
-          <caret line="2" column="17" selection-start-line="2" selection-start-column="17" selection-end-line="2" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/webpack/track-usage-plugin.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="8" selection-start-column="8" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test/test-modules/member-fn-es6-alias.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="8" column="10" selection-start-line="8" selection-start-column="10" selection-end-line="8" selection-end-column="10" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test/ast.txt" />
-    <entry file="file://$PROJECT_DIR$/test/test-modules/member-fn-es6-template.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="30">
-          <caret line="2" column="4" selection-start-line="2" selection-start-column="4" selection-end-line="2" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test/test-modules/member-fn-es6-template2.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="30">
-          <caret line="2" column="10" selection-start-line="2" selection-start-column="10" selection-end-line="2" selection-end-column="10" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/dump.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="209">
-          <caret line="24" column="13" selection-start-line="24" selection-start-column="10" selection-end-line="24" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/package.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
-          <caret line="21" column="29" selection-start-line="21" selection-start-column="29" selection-end-line="21" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test/test.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2212">
-          <caret line="263" column="45" selection-start-line="263" selection-start-column="45" selection-end-line="263" selection-end-column="45" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test/test-modules/multi.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="15" selection-start-line="14" selection-end-line="15" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="277">
-          <caret line="140" selection-start-line="140" selection-end-line="140" />
-        </state>
-      </provider>
-    </entry>
   </component>
   <component name="masterDetails">
     <states>
