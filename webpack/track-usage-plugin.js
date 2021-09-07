@@ -16,7 +16,7 @@ TrackUsagePlugin.prototype.apply = function (compiler)
 {
     var output = this.options.output;
 
-    compiler.plugin("emit", function (compilation, callback)
+    compiler.hooks.emit.tapAsync("track-usage-plugin", (compilation, callback) =>
     {
         var usageData = TrackUsage.get();
         fs.writeFile(output, JSON.stringify(usageData), callback);
