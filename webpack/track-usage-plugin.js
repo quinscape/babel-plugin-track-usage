@@ -16,10 +16,10 @@ TrackUsagePlugin.prototype.apply = function (compiler)
 {
     var output = this.options.output;
 
-    compiler.hooks.emit.tapAsync("track-usage-plugin", (compilation, callback) =>
+    compiler.hooks.afterEmit.tap("track-usage-plugin", compilation =>
     {
         var usageData = TrackUsage.get();
-        fs.writeFile(output, JSON.stringify(usageData), callback);
+        fs.writeFileSync(output, JSON.stringify(usageData), "utf-8");
     });
 };
 
