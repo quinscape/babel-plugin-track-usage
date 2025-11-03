@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="38bcee5a-73a2-4c13-856c-28600b880d88" name="Default" comment="Fix debug logging &#10;&#10;That branch is member calls (module.fn)">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/webpack/track-usage-plugin.js" beforeDir="false" afterPath="$PROJECT_DIR$/webpack/track-usage-plugin.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -275,7 +274,10 @@
       <workItem from="1600519084081" duration="740000" />
       <workItem from="1600520528719" duration="2198000" />
       <workItem from="1615929140955" duration="715000" />
-      <workItem from="1631037847879" duration="206000" />
+      <workItem from="1631037847879" duration="1345000" />
+      <workItem from="1631100296603" duration="30000" />
+      <workItem from="1631290223088" duration="203000" />
+      <workItem from="1633356039650" duration="604000" />
     </task>
     <servers />
   </component>
