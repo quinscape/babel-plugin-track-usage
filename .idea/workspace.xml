@@ -5,7 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="38bcee5a-73a2-4c13-856c-28600b880d88" name="Default" comment="Fix debug logging &#10;&#10;That branch is member calls (module.fn)">
+      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/Track_Usage_Plugin.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/runConfigurations/Track_Usage_Plugin.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/test2.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/typescript-test.js" beforeDir="false" afterPath="$PROJECT_DIR$/test/typescript-test.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,17 +44,22 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Mocha.Track Usage Plugin (Typescript).detects member functions as named imports.executor": "Run",
+    "Mocha.Track Usage Plugin (Typescript).detects member functions.executor": "Run",
+    "Mocha.Track Usage Plugin (Typescript).detects module functions.executor": "Run",
     "Mocha.Track Usage Plugin.executor": "Run",
     "Mocha.Track Usage Tests.executor": "Run",
     "Mocha.test.executor": "Run",
     "git-widget-placeholder": "master",
-    "last_opened_file_path": "/home/sven/ideaprojects/babel-plugin-track-usage/test",
+    "last_opened_file_path": "/home/sven/ideaprojects/babel-plugin-track-usage/test/test-modules/typescript",
     "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs.mocha.mocha_node_package_dir": "/home/sven/ideaprojects/babel-plugin-track-usage/node_modules/mocha"
+    "nodejs.mocha.mocha_node_package_dir": "/home/sven/ideaprojects/babel-plugin-track-usage/node_modules/mocha",
+    "ts.external.directory.path": "/home/sven/tools/idea-IU-251.26927.53/plugins/javascript-plugin/jsLanguageServicesImpl/external"
   }
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/test/test-modules/typescript" />
       <recent name="$PROJECT_DIR$/test/test-modules" />
       <recent name="$PROJECT_DIR$" />
     </key>
@@ -143,6 +151,54 @@
       <envs />
       <method v="2" />
     </configuration>
+    <configuration name="Track Usage Plugin (Typescript).detects member functions as named imports" type="mocha-javascript-test-runner" temporary="true" nameIsGenerated="true">
+      <node-interpreter>node</node-interpreter>
+      <node-options />
+      <mocha-package>$PROJECT_DIR$/node_modules/mocha</mocha-package>
+      <working-directory>$PROJECT_DIR$</working-directory>
+      <pass-parent-env>true</pass-parent-env>
+      <ui>bdd</ui>
+      <extra-mocha-options />
+      <test-kind>TEST</test-kind>
+      <test-file>$PROJECT_DIR$/test/typescript-test.js</test-file>
+      <test-names>
+        <name value="Track Usage Plugin (Typescript)" />
+        <name value="detects member functions as named imports" />
+      </test-names>
+      <method v="2" />
+    </configuration>
+    <configuration name="Track Usage Plugin (Typescript).detects member functions" type="mocha-javascript-test-runner" temporary="true" nameIsGenerated="true">
+      <node-interpreter>/usr/bin/node</node-interpreter>
+      <node-options />
+      <mocha-package>$PROJECT_DIR$/node_modules/mocha</mocha-package>
+      <working-directory>$PROJECT_DIR$</working-directory>
+      <pass-parent-env>true</pass-parent-env>
+      <ui>bdd</ui>
+      <extra-mocha-options>-r @babel/register</extra-mocha-options>
+      <test-kind>TEST</test-kind>
+      <test-file>$PROJECT_DIR$/test/typescript-test.js</test-file>
+      <test-names>
+        <name value="Track Usage Plugin (Typescript)" />
+        <name value="detects member functions" />
+      </test-names>
+      <method v="2" />
+    </configuration>
+    <configuration name="Track Usage Plugin (Typescript).detects module functions" type="mocha-javascript-test-runner" temporary="true" nameIsGenerated="true">
+      <node-interpreter>/usr/bin/node</node-interpreter>
+      <node-options />
+      <mocha-package>$PROJECT_DIR$/node_modules/mocha</mocha-package>
+      <working-directory>$PROJECT_DIR$</working-directory>
+      <pass-parent-env>true</pass-parent-env>
+      <ui>bdd</ui>
+      <extra-mocha-options>-r @babel/register</extra-mocha-options>
+      <test-kind>TEST</test-kind>
+      <test-file>$PROJECT_DIR$/test/typescript-test.js</test-file>
+      <test-names>
+        <name value="Track Usage Plugin (Typescript)" />
+        <name value="detects module functions" />
+      </test-names>
+      <method v="2" />
+    </configuration>
     <configuration default="true" type="mocha-javascript-test-runner">
       <node-interpreter />
       <node-options />
@@ -156,12 +212,17 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Mocha.test" />
       <item itemvalue="Mocha.Track Usage Plugin" />
+      <item itemvalue="Mocha.Track Usage Plugin (Typescript).detects member functions" />
+      <item itemvalue="Mocha.Track Usage Plugin (Typescript).detects member functions as named imports" />
+      <item itemvalue="Mocha.Track Usage Plugin (Typescript).detects module functions" />
       <item itemvalue="Node.js.test.js (2)" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Mocha.Track Usage Plugin (Typescript).detects member functions as named imports" />
+        <item itemvalue="Mocha.Track Usage Plugin (Typescript).detects member functions" />
+        <item itemvalue="Mocha.Track Usage Plugin (Typescript).detects module functions" />
         <item itemvalue="Node.js.test.js (2)" />
       </list>
     </recent_temporary>
@@ -269,13 +330,9 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/index.js</url>
-          <line>341</line>
-          <option name="timeStamp" value="6" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/src/index.js</url>
-          <line>369</line>
-          <option name="timeStamp" value="8" />
+          <line>451</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="10" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
