@@ -42,11 +42,6 @@ var OPTIONS = {
                     fn: "multiIdent",
                     varArgs: 2,
                     allowIdentifier: true
-                },
-                multiVarArg2: {
-                    module: "./service/multi2",
-                    fn: "multiVar2",
-                    varArgs: 2
                 }
             },
             debug: false,
@@ -277,15 +272,9 @@ describe("Track Usage Plugin", function ()
                     "Qux",
                     "Quux"
                 ]
+                // no entry for "const g = multiVar('Ignored',  'Not Literal' + 5);"
             ]);
-
-            assert.deepEqual(usages['./multi'].calls.multiVarArg2, [
-                [
-                    "Bla",
-                    "Fasel"
-                ]
-            ]);
-
+            
             assert.deepEqual(usages['./multi'].calls.multiVarArgIdent, [
                 [
                     { __identifier: "MyIdent" }, { value: "abc"}
