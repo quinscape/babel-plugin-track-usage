@@ -140,7 +140,8 @@ describe("Track Usage Plugin", function ()
             assert.deepEqual(
                 usages['./mod-fn-es6'].calls.nonVar,
                 [
-                    ["A"]
+                    ["A"],
+                    ["A","B"],
                 ]
             );
         });
