@@ -2,8 +2,10 @@
 import { thing as th } from './service/lookup';
 //noinspection JSFileReferences,JSAnnotator
 import { nonvar as nv } from './service/lookup';
-var a = 123;
-var b = th('Bar');
-var c = th('Present', 3);
-var d = nv('A');
+
+
+const a = 123
+const b = th("Bar")
+const c = th("Present", 3)
+const d = nv("A")
 

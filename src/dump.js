@@ -1,6 +1,6 @@
 function dump(node)
 {
-    var buff = [];
+    const buff = []
     dumpRec(node, buff, [], 0);
 
     fs.writeFileSync("/home/sven/ideaprojects/babel-plugin-track-usage/test/ast.txt", buff.join(""))
@@ -8,23 +8,25 @@ function dump(node)
 
 function indent(buff, depth)
 {
-    for (var i = 0; i < depth; i++)
+    for (let i = 0; i < depth; i++)
     {
         buff.push("    ")
     }
 }
 
-var FILTERED_PROPS = {
-    "type" : true,
-    "start" : true,
-    "end" : true,
-    "loc" : true,
-    "source" : true
+
+const FILTERED_PROPS = {
+    "type": true,
+    "start": true,
+    "end": true,
+    "loc": true,
+    "source": true
 }
+
 
 function dumpRec(node, buff, visited, depth)
 {
-    var i;
+    let i
     for (i = 0; i < visited.length; i++)
     {
         if (node === visited[i])
@@ -33,7 +35,7 @@ function dumpRec(node, buff, visited, depth)
             buff.push("*back to ", i, "*\n")
         }
     }
-    var id = visited.length;
+    const id = visited.length
     visited.push(node);
 
 
@@ -43,7 +45,7 @@ function dumpRec(node, buff, visited, depth)
         buff.push(node.type, "( id=", id, ")\n");
     }
 
-    for (var name in node)
+    for (let name in node)
     {
         if (node.hasOwnProperty(name) && FILTERED_PROPS[name])
         {
@@ -52,7 +54,7 @@ function dumpRec(node, buff, visited, depth)
 
         if (node.hasOwnProperty(name))
         {
-            var value = node[name];
+            const value = node[name]
 
             if (Array.isArray(value))
             {

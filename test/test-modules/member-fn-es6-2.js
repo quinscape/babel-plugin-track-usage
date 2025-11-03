@@ -2,8 +2,10 @@
 import { thing } from './service/lookup';
 //noinspection JSFileReferences,JSAnnotator
 import { nonvar } from './service/lookup';
-var a = 123;
-var b = thing('Bar');
-var c = thing('Present', 3);
-var d = nonvar('A');
+
+
+const a = 123
+const b = thing("Bar")
+const c = thing("Present", 3)
+const d = nonvar("A")
 

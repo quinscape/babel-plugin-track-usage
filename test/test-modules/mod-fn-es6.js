@@ -2,8 +2,10 @@
 import moduleFn from './service/moduleFn';
 //noinspection JSFileReferences,JSAnnotator
 import nonvar from './service/nonVarMod';
-var a = 123;
-var b = moduleFn('Foo');
-var c = nonvar('A');
-var d = moduleFn('NotIgnored', 2);
-var e = nonvar('A', 'B');
+
+
+const a = 123
+const b = moduleFn("Foo")
+const c = nonvar("A")
+const d = moduleFn("NotIgnored", 2)
+const e = nonvar("A", "B")

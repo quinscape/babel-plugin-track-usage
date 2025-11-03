@@ -1,7 +1,9 @@
 //noinspection JSFileReferences,JSAnnotator
 import lookup from './service/lookup';
-var a = 123;
-var b = lookup.thing('Bar');
-var c = lookup.thing('Present', 3);
-var d = lookup.nonvar('A');
+
+
+const a = 123
+const b = lookup.thing("Bar")
+const c = lookup.thing("Present", 3)
+const d = lookup.nonvar("A")
 

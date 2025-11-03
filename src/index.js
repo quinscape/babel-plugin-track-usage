@@ -1,11 +1,13 @@
-var nodeJsPath = require("path");
-var fs = require("fs");
+const nodeJsPath = require("path")
+const fs = require("fs")
 //var dump = require("./dump");
-var deepEqual = require("deep-equal");
+const deepEqual = require("deep-equal")
 
-var Data = require("../data");
+const Data = require("../data")
 
-var SLASH_RE = new RegExp("\\" + nodeJsPath.sep, "g");
+const SLASH_RE = new RegExp("\\" + nodeJsPath.sep, "g")
+
+
 function strip(path, sourceRoot)
 {
     if (nodeJsPath.sep !== "/")
@@ -33,9 +35,9 @@ module.exports = function (t) {
 
     function insert(set, value)
     {
-        for (var i = 0; i < set.length; i++)
+        for (let i = 0; i < set.length; i++)
         {
-            var v = set[i];
+            const v = set[i]
             if (deepEqual(v, value))
             {
                 return;
@@ -47,13 +49,16 @@ module.exports = function (t) {
 
     function recordCall(data, node, memberCall, importedFnCall)
     {
-        var record, callee = node.callee;
+        let record
+        const callee = node.callee
 
-        var array = memberCall ? data._config.trackedByVar[callee.object.name] : data._config.trackedByVar[callee.name];
-        for (var i = 0; i < array.length; i++)
+        const array = memberCall ?
+            data._config.trackedByVar[callee.object.name] :
+            data._config.trackedByVar[callee.name]
+        for (let i = 0; i < array.length; i++)
         {
-            var e = array[i];
-            var tf = data._config.trackedFunctions[e.name];
+            const e = array[i]
+            const tf = data._config.trackedFunctions[e.name]
 
             if ((memberCall && tf.fn) || (!memberCall && !tf.fn) || (!memberCall && importedFnCall && tf.fn))
             {
@@ -64,15 +69,15 @@ module.exports = function (t) {
 
                 if (!tf.fn || importedFnCall || e.expr(callee))
                 {
-                    var args = node.arguments;
-                    var varArgs = tf.varArgs;
+                    const args = node.arguments
+                    const varArgs = tf.varArgs
 
-                    var argsEnd = Math.min(
+                    const argsEnd = Math.min(
                         args.length,
                         varArgs ? (
                             typeof varArgs === "number" && varArgs > 0 ? varArgs : 1
                         ) : Infinity
-                    );
+                    )
 
                     // if (node.arguments.length === 1 || (varArgs && node.arguments.length >= 1))
                     // {
@@ -83,16 +88,15 @@ module.exports = function (t) {
                         data.calls[e.name] = record;
                     }
 
-                    var values = [];
+                    const values = []
 
-
-                    var allEvaluated = true;
-                    for (var j = 0; j < argsEnd; j++)
+                    let allEvaluated = true
+                    for (let j = 0; j < argsEnd; j++)
                     {
-                        var evaluated = staticEval(
+                        const evaluated = staticEval(
                             args[j],
                             tf.allowIdentifier
-                        );
+                        )
                         if (evaluated === undefined)
                         {
                             allEvaluated = false;
@@ -130,7 +134,7 @@ module.exports = function (t) {
 
     function staticEval(node, allowIdentifier)
     {
-        var i, out, evaluatedValue;
+        let i, out, evaluatedValue
 
         if (t.isTemplateLiteral(node))
         {
@@ -151,7 +155,7 @@ module.exports = function (t) {
         }
         else if (t.isArrayExpression(node))
         {
-            var elements = node.elements;
+            const elements = node.elements
             out = new Array(elements.length);
             for (i = 0; i < elements.length; i++)
             {
@@ -171,11 +175,12 @@ module.exports = function (t) {
         }
         else if (t.isObjectExpression(node))
         {
-            var properties = node.properties;
+            const properties = node.properties
             out = {};
             for (i = 0; i < properties.length; i++)
             {
-                var key, property = properties[i];
+                let key
+                const property = properties[i]
                 if (t.isLiteral(property.key))
                 {
                     key = property.key.value;
@@ -221,13 +226,13 @@ module.exports = function (t) {
     {
         //console.log("getRelativeModuleName", opts.sourceRoot);
 
-        var root = opts.root || opts.sourceRoot;
+        const root = opts.root || opts.sourceRoot
         if (!root)
         {
             return null;
         }
-        var len = root.length;
-        var fullWithExtension = opts.filename.substring(root[len - 1] === nodeJsPath.sep ? len : len + 1);
+        const len = root.length
+        const fullWithExtension = opts.filename.substring(root[len - 1] === nodeJsPath.sep ? len : len + 1)
 
         return fullWithExtension.substring(0, fullWithExtension.lastIndexOf("."));
     }
@@ -251,26 +256,26 @@ module.exports = function (t) {
         }
 
         // no call arguments
-        var args = node.arguments;
+        const args = node.arguments
         if (args.length !== 1)
         {
             return false;
         }
 
         // first node arg is not an object
-        var first = args[0];
+        const first = args[0]
         return t.isLiteral(first);
     }
 
     function trackVar(data, state, varName, modulePath, importedName, module)
     {
-        var pluginOpts = state.opts;
+        const pluginOpts = state.opts
 
         if (modulePath[0] === ".")
         {
             // resolve relative module ("/../" to go back from the view to its directory)
 
-            var relRequired = strip(nodeJsPath.normalize(module + "/../" + modulePath), pluginOpts.sourceRoot);
+            const relRequired = strip(nodeJsPath.normalize(module + "/../" + modulePath), pluginOpts.sourceRoot)
 
             if (!relRequired)
             {
@@ -281,18 +286,18 @@ module.exports = function (t) {
         }
         data.requires[varName] = modulePath;
 
-        var array = data._config && data._config.moduleLookup[modulePath];
+        const array = data._config && data._config.moduleLookup[modulePath]
         if (array)
         {
             // copy tracked function association to local variable
 
-            var out = [];
+            const out = []
 
-            for (var i = 0; i < array.length; i++)
+            for (let i = 0; i < array.length; i++)
             {
-                var name = array[i];
-                var tf = data._config.trackedFunctions[name];
-                var fn = tf.fn;
+                const name = array[i]
+                const tf = data._config.trackedFunctions[name]
+                const fn = tf.fn
                 if (fn)
                 {
                     if (importedName)
@@ -340,8 +345,8 @@ module.exports = function (t) {
             "Program": function (path, state) {
                 //dump(path.node);
 
-                var pluginOpts = state.opts;
-                var module = getRelativeModuleName(path.hub.file.opts);
+                const pluginOpts = state.opts
+                const module = getRelativeModuleName(path.hub.file.opts)
                 if (!module)
                 {
                     if (state.opts.debug)
@@ -351,28 +356,28 @@ module.exports = function (t) {
                     return;
                 }
 
-                var relative = strip(module, pluginOpts.sourceRoot);
+                const relative = strip(module, pluginOpts.sourceRoot)
 
                 if (!relative)
                 {
                     return;
                 }
 
-                var data = Data._internal()["./" + relative] = {
+                const data = Data._internal()["./" + relative] = {
                     //module: module,
                     requires: {},
                     calls: {}
-                };
+                }
 
-                var moduleLookup = {};
+                const moduleLookup = {}
 
-                var trackedFunctions = pluginOpts.trackedFunctions;
-                for (var name in trackedFunctions)
+                const trackedFunctions = pluginOpts.trackedFunctions
+                for (let name in trackedFunctions)
                 {
                     if (trackedFunctions.hasOwnProperty(name))
                     {
-                        var tf = trackedFunctions[name];
-                        var array = moduleLookup[tf.module];
+                        const tf = trackedFunctions[name]
+                        let array = moduleLookup[tf.module]
                         if (!array)
                         {
                             array = [name];
@@ -401,33 +406,33 @@ module.exports = function (t) {
             },
             "AssignmentExpression|VariableDeclarator": function (path, state) {
                 //dir("state", state);
-                var pluginOpts = state.opts;
-                var node = path.node;
-                var scope = path.scope;
+                const pluginOpts = state.opts
+                const node = path.node
+                const scope = path.scope
                 if (scope.parent)
                 {
                     // we only want to examine the root scope
                     return;
                 }
 
-                var left, right;
+                let left, right
 
-                var module = getRelativeModuleName(path.hub.file.opts);
+                const module = getRelativeModuleName(path.hub.file.opts)
                 if (!module)
                 {
                     return;
                 }
 
-                var relative = strip(module, pluginOpts.sourceRoot);
+                const relative = strip(module, pluginOpts.sourceRoot)
 
                 if (!relative)
                 {
                     return;
                 }
-                var data = Data._internal()["./" + relative];
+                const data = Data._internal()["./" + relative]
 
-                var nodeIsAssignment = t.isAssignmentExpression(node);
-                var nodeIsVariableDeclarator = t.isVariableDeclarator(node);
+                const nodeIsAssignment = t.isAssignmentExpression(node)
+                const nodeIsVariableDeclarator = t.isVariableDeclarator(node)
                 if (nodeIsAssignment)
                 {
                     left = node.left;
@@ -444,28 +449,28 @@ module.exports = function (t) {
                 }
             },
             "CallExpression": function (path, state) {
-                var pluginOpts = state.opts;
-                var node = path.node;
+                const pluginOpts = state.opts
+                const node = path.node
 
                 if (!path.hub)
                 {
                     return;
                 }
 
-                var module = getRelativeModuleName(path.hub.file.opts);
+                const module = getRelativeModuleName(path.hub.file.opts)
                 if (!module)
                 {
                     return;
                 }
-                var relative = strip(module, pluginOpts.sourceRoot);
+                const relative = strip(module, pluginOpts.sourceRoot)
 
                 if (!relative)
                 {
                     return;
                 }
-                var data = Data._internal()["./" + relative];
+                const data = Data._internal()["./" + relative]
 
-                var callee = node.callee;
+                const callee = node.callee
 
                 if (!data._config)
                 {
@@ -497,22 +502,24 @@ module.exports = function (t) {
                 }
             },
             "ImportDeclaration": function (path, state) {
-                var i, node = path.node, specifier;
-                var pluginOpts = state.opts;
+                let i
+                const node = path.node
+                let specifier
+                const pluginOpts = state.opts
 
-                var module = getRelativeModuleName(path.hub.file.opts);
+                const module = getRelativeModuleName(path.hub.file.opts)
                 if (!module)
                 {
                     return;
                 }
 
-                var relative = strip(module, pluginOpts.sourceRoot);
+                const relative = strip(module, pluginOpts.sourceRoot)
 
                 if (!relative)
                 {
                     return;
                 }
-                var data = Data._internal()["./" + relative];
+                const data = Data._internal()["./" + relative]
 
                 for (i = 0; i < node.specifiers.length; i++)
                 {

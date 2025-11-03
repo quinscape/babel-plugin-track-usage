@@ -1,5 +1,5 @@
-var assert = require("power-assert");
-var Data = require("../data");
+const assert = require("power-assert")
+const Data = require("../data")
 const transform = require("./transform");
 
 describe("Track Usage Plugin", function ()
@@ -14,7 +14,7 @@ describe("Track Usage Plugin", function ()
 
             transform("./test-modules/mod-fn-es5.js");
 
-            var usages = Data.get().usages;
+            const usages = Data.get().usages
             //console.log(JSON.stringify(usages, null, 2));
             assert(usages['./mod-fn-es5'].requires[0] === "./service/moduleFn");
             assert(usages['./mod-fn-es5'].requires[1] === "./service/nonVarMod");
@@ -40,7 +40,7 @@ describe("Track Usage Plugin", function ()
 
             transform("./test-modules/member-fn-es5.js");
 
-            var usages = Data.get().usages;
+            const usages = Data.get().usages
             //console.log(JSON.stringify(usages, null, 2));
 
             assert(usages['./member-fn-es5'].requires[0] === "./service/lookup");
@@ -69,7 +69,7 @@ describe("Track Usage Plugin", function ()
 
             transform("./test-modules/mod-fn-es6.js");
 
-            var usages = Data.get().usages;
+            const usages = Data.get().usages
             //console.log(JSON.stringify(usages, null, 2));
             assert(usages['./mod-fn-es6'].requires[0] === "./service/moduleFn");
             assert(usages['./mod-fn-es6'].requires[1] === "./service/nonVarMod");
@@ -95,7 +95,7 @@ describe("Track Usage Plugin", function ()
 
             transform("./test-modules/member-fn-es6.js");
 
-            var usages = Data.get().usages;
+            const usages = Data.get().usages
             //console.log(JSON.stringify(usages, null, 2));
 
             assert(usages['./member-fn-es6'].requires[0] === "./service/lookup");
@@ -121,7 +121,7 @@ describe("Track Usage Plugin", function ()
 
             transform("./test-modules/member-fn-es6-2.js");
 
-            var usages = Data.get().usages;
+            const usages = Data.get().usages
             //console.log(JSON.stringify(usages, null, 2));
 
             assert(usages['./member-fn-es6-2'].requires[0] === "./service/lookup");
@@ -145,7 +145,7 @@ describe("Track Usage Plugin", function ()
 
             transform("./test-modules/member-fn-es6-alias.js");
 
-            var usages = Data.get().usages;
+            const usages = Data.get().usages
             //console.log(JSON.stringify(usages, null, 2));
 
             assert(usages['./member-fn-es6-alias'].requires[0] === "./service/lookup");
@@ -169,8 +169,7 @@ describe("Track Usage Plugin", function ()
 
             transform("./test-modules/multi.js");
 
-
-            var usages = Data.get().usages;
+            const usages = Data.get().usages
 
             assert.deepEqual(usages['./multi'].calls.multiArg, [
                 [
@@ -235,7 +234,7 @@ describe("Track Usage Plugin", function ()
 
         transform("./test-modules/sub/mod-fn-es6.js");
 
-        var usages = Data.get().usages;
+        const usages = Data.get().usages
         //console.log(JSON.stringify(usages, null, 2));
         assert(usages['./sub/mod-fn-es6'].requires[0] === "./service/moduleFn");
         assert(usages['./sub/mod-fn-es6'].requires[1] === "./service/nonVarMod");
@@ -260,7 +259,7 @@ describe("Track Usage Plugin", function ()
     {
         transform("./test-modules/member-fn-es6-template.js");
 
-        var usages = Data.get().usages;
+        const usages = Data.get().usages
         //console.log(JSON.stringify(usages, null, 2));
 
         assert(usages['./member-fn-es6-template'].requires[0] === "./service/lookup");
