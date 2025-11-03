@@ -1,6 +1,16 @@
 var fs = require("fs");
 var TrackUsage = require("babel-plugin-track-usage/data");
 
+
+/**
+ * Creates a new instance of the TrackUsagePlugin which is a webpack plugin for
+ * babel-plugin-track-usage.
+ *
+ * It is necessary to write out the collected usage data into a JSON file.
+ *
+ * @param options
+ * @constructor
+ */
 function TrackUsagePlugin(options)
 {
     if (typeof options.output !== "string")
