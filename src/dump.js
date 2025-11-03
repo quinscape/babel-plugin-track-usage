@@ -1,3 +1,5 @@
+const fs = require("fs");
+
 function dump(node)
 {
     const buff = []
