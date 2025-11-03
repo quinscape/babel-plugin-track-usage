@@ -25,6 +25,7 @@
         "@babel/cli": "^7.28.3",
         "@babel/core": "^7.28.5",
         "@babel/preset-env": "^7.28.5",
+        "@babel/preset-typescript": "^7.28.5",
         "@babel/register": "^7.28.3",
         "babel-plugin-espower": "^3.0.1",
         "core-js": "^3.46.0",
