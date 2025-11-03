@@ -170,6 +170,7 @@ describe("Track Usage Plugin", function ()
             transform("./test-modules/multi.js");
 
             const usages = Data.get().usages
+            //console.log(JSON.stringify(usages, null, 2));
 
             assert.deepEqual(usages['./multi'].calls.multiArg, [
                 [
@@ -218,13 +219,21 @@ describe("Track Usage Plugin", function ()
                 ]
                 // no entry for "const g = multiVar('Ignored',  'Not Literal' + 5);"
             ]);
-            
+
+        })
+
+        it("supports identifiers", function ()
+        {
+
+            transform("./test-modules/multi.js");
+
+            const usages = Data.get().usages
+            //console.log(JSON.stringify(usages, null, 2));
             assert.deepEqual(usages['./multi'].calls.multiVarArgIdent, [
                 [
                     { __identifier: "MyIdent" }, { value: "abc"}
                 ]
             ]);
-            //console.log(JSON.stringify(usages, null, 2));
         })
 
     });
