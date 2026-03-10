@@ -306,4 +306,20 @@ describe("Track Usage Plugin", function ()
 
     })
 
+    it("optionally tracks indexes", function ()
+    {
+        transform("./test-modules/ctor.js", false, true);
+
+        const usages = Data.get().usages
+        console.log(JSON.stringify(usages, null, 2));
+
+        assert.deepEqual(usages['./ctor'].indexes.ctor, [
+            [
+                92,
+                122
+            ]
+        ]);
+
+    })
+
 });

@@ -33,7 +33,7 @@ module.exports = function (t) {
 
     t = t.types;
 
-    function insert(set, value)
+    function insert(set, indexes, value, loc)
     {
         for (let i = 0; i < set.length; i++)
         {
@@ -45,11 +45,15 @@ module.exports = function (t) {
         }
 
         set.push(value);
+        if (indexes)
+        {
+            indexes.push(loc)
+        }
     }
 
-    function recordCall(data, node, memberCall, importedFnCall)
+    function recordCall(data, node, pluginOpts, memberCall, importedFnCall)
     {
-        let record
+        let record, indexRecord
         const callee = node.callee
 
         const array = memberCall ?
@@ -82,10 +86,16 @@ module.exports = function (t) {
                     // if (node.arguments.length === 1 || (varArgs && node.arguments.length >= 1))
                     // {
                     record = data.calls[e.name];
+                    indexRecord = pluginOpts.indexes && data.indexes[e.name];
                     if (!record)
                     {
                         record = [];
                         data.calls[e.name] = record;
+                        if (pluginOpts.indexes)
+                        {
+                            indexRecord = []
+                            data.indexes[e.name] = indexRecord;
+                        }
                     }
 
                     const values = []
@@ -116,7 +126,7 @@ module.exports = function (t) {
                         {
                             console.log("Record '" + values + "' for " + e.name);
                         }
-                        insert(record, values);
+                        insert(record, indexRecord, values, [node.start, node.end]);
                     }
                     else if (data._config.debug)
                     {
@@ -369,6 +379,11 @@ module.exports = function (t) {
                     calls: {}
                 }
 
+                if (pluginOpts.indexes)
+                {
+                    data.indexes = {};
+                }
+
                 const moduleLookup = {}
 
                 const trackedFunctions = pluginOpts.trackedFunctions
@@ -483,14 +498,14 @@ module.exports = function (t) {
                     {
                         console.log("Module call for variable " + callee.name + "");
                     }
-                    recordCall(data, node, false, false);
+                    recordCall(data, node, pluginOpts, false, false);
                 } else if (t.isIdentifier(callee) && data._config.isMemberCall[callee.name])
                 {
                     if (state.opts.debug)
                     {
                         console.log("Imported member call for variable " + callee.name + "");
                     }
-                    recordCall(data, node, false, true);
+                    recordCall(data, node, pluginOpts, false, true);
                 } else if (t.isMemberExpression(callee) && t.isIdentifier(
                     callee.object) && data._config.hasMemberCall[callee.object.name])
                 {
@@ -498,7 +513,7 @@ module.exports = function (t) {
                     {
                         console.log("Member call for variable " + callee.object.name + "");
                     }
-                    recordCall(data, node, true, false);
+                    recordCall(data, node, pluginOpts, true, false);
                 }
             },
             "ImportDeclaration": function (path, state) {

@@ -52,6 +52,11 @@ var DataStore = {
                     calls: e.calls
                 }
 
+                if (e.indexes)
+                {
+                    cleaned[module].indexes = e.indexes;
+                }
+
             }
         }
 

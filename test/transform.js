@@ -4,7 +4,7 @@ const path = require("path")
 
 
 
-function transform(relPath, typeScript = false)
+function transform(relPath, typeScript = false, indexes = false)
 {
 
     const servicePath = typeScript ? "./typescript/service/" : "./service/"
@@ -53,6 +53,7 @@ function transform(relPath, typeScript = false)
                         fn: "MyConstructor"
                     }
                 },
+                indexes,
                 debug: false,
                 sourceRoot: "test-modules/"
             }
