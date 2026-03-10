@@ -291,4 +291,19 @@ describe("Track Usage Plugin", function ()
         );
     })
 
+    it("does detect constructor calls", function ()
+    {
+        transform("./test-modules/ctor.js", false);
+
+        const usages = Data.get().usages
+        //console.log(JSON.stringify(usages, null, 2));
+
+        assert.deepEqual(usages['./ctor'].calls.ctor, [
+            [
+                "CTOR NAME",
+            ]
+        ]);
+
+    })
+
 });

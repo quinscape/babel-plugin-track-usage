@@ -1,0 +1,4 @@
+// @ts-ignore
+import { MyConstructor } from './service/ctor';
+
+const a = new MyConstructor("CTOR NAME")

@@ -47,6 +47,10 @@ function transform(relPath, typeScript = false)
                         fn: "multiIdent",
                         varArgs: 2,
                         allowIdentifier: true
+                    },
+                    ctor: {
+                        module: servicePath + "ctor",
+                        fn: "MyConstructor"
                     }
                 },
                 debug: false,

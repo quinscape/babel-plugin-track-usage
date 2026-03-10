@@ -448,7 +448,7 @@ module.exports = function (t) {
                     trackVar(data, state, left.name, right.arguments[0].value, null, module);
                 }
             },
-            "CallExpression": function (path, state) {
+            "CallExpression|NewExpression": function (path, state) {
                 const pluginOpts = state.opts
                 const node = path.node
 

@@ -208,5 +208,20 @@ describe("Track Usage Plugin (Typescript)", function ()
     })
 
 
+    it("does detect constructor calls", function ()
+    {
+        transform("./test-modules/typescript/ctor.ts", true);
+
+        const usages = Data.get().usages
+        //console.log(JSON.stringify(usages, null, 2));
+
+        assert.deepEqual(usages['./typescript/ctor'].calls.ctor, [
+            [
+                "CTOR NAME",
+            ]
+        ]);
+
+    })
+
 
 });
