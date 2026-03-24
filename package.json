@@ -22,13 +22,13 @@
         "deep-equal": "^2.2.3"
     },
     "devDependencies": {
-        "@babel/cli": "^7.28.3",
-        "@babel/core": "^7.28.5",
-        "@babel/preset-env": "^7.28.5",
+        "@babel/cli": "^7.28.6",
+        "@babel/core": "^7.28.6",
+        "@babel/preset-env": "^7.28.6",
         "@babel/preset-typescript": "^7.28.5",
-        "@babel/register": "^7.28.3",
+        "@babel/register": "^7.28.6",
         "babel-plugin-espower": "^3.0.1",
-        "core-js": "^3.46.0",
+        "core-js": "^3.49.0",
         "mocha": "^11.7.4",
         "power-assert": "^1.6.1"
     }
