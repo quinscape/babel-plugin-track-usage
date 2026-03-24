@@ -51,6 +51,24 @@ function transform(relPath, typeScript = false, indexes = false)
                     ctor: {
                         module: servicePath + "ctor",
                         fn: "MyConstructor"
+                    },
+                    contextTarget: {
+                        module: servicePath + "contextTarget",
+                        fn: "contextTarget",
+                        captureContext: "parent.id.name"
+                    },
+                    arrayContextTarget: {
+                        module: servicePath + "contextTarget",
+                        fn: "arrayContextTarget",
+                        captureContext: ["parent.id.name", "parent.left.name"]
+                    },
+                    objectContextTarget: {
+                        module: servicePath + "contextTarget",
+                        fn: "objectContextTarget",
+                        captureContext: {
+                            type: "parent.type",
+                            name: "parent.parent.id.name"
+                        }
                     }
                 },
                 indexes,

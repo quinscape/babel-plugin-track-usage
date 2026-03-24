@@ -225,7 +225,7 @@ describe("Track Usage Plugin", function ()
         it("supports identifiers", function ()
         {
 
-            transform("./test-modules/multi.js");
+            transform("./test-modules/multi.js", false, true);
 
             const usages = Data.get().usages
             //console.log(JSON.stringify(usages, null, 2));
@@ -233,6 +233,51 @@ describe("Track Usage Plugin", function ()
                 [
                     { __identifier: "MyIdent" }, { value: "abc"}
                 ]
+            ]);
+        })
+
+        it("captures context", function ()
+        {
+
+            transform("./test-modules/context.js", false, false);
+
+            const usages = Data.get().usages
+            //console.log(JSON.stringify(usages, null, 2));
+            assert.deepEqual(usages['./context'].calls.contextTarget, [
+                [
+                    "PARAMS",
+                    12
+                ]
+            ]);
+            assert.deepEqual(usages['./context'].calls.arrayContextTarget, [
+                [
+                    "PARAMS",
+                    34
+                ]
+            ]);
+            assert.deepEqual(usages['./context'].calls.objectContextTarget, [
+                [
+                    "PARAMS",
+                    56
+                ]
+            ]);
+
+            assert.deepEqual(usages['./context'].contexts.contextTarget, [
+                "aaa"
+            ]);
+
+            assert.deepEqual(usages['./context'].contexts.arrayContextTarget, [
+                [
+                    "__FAILED__",
+                    "bbb"
+                ]
+            ]);
+
+            assert.deepEqual(usages['./context'].contexts.objectContextTarget, [
+                {
+                    "type": "ConditionalExpression",
+                    "name": "foos"
+                }
             ]);
         })
 
@@ -311,7 +356,8 @@ describe("Track Usage Plugin", function ()
         transform("./test-modules/ctor.js", false, true);
 
         const usages = Data.get().usages
-        console.log(JSON.stringify(usages, null, 2));
+
+        //console.log(JSON.stringify(usages, null, 2));
 
         assert.deepEqual(usages['./ctor'].indexes.ctor, [
             [

@@ -7,6 +7,7 @@ const Data = require("../data")
 
 const SLASH_RE = new RegExp("\\" + nodeJsPath.sep, "g")
 
+const FAILED = "__FAILED__";
 
 function strip(path, sourceRoot)
 {
@@ -29,11 +30,96 @@ function strip(path, sourceRoot)
     return path;
 }
 
+
+function evalRule(path, rule)
+{
+    let parts = rule.split(".")
+    let current = path;
+    let isPath = true;
+    let last = parts.length - 1;
+    for (let i = 0; i <= last; i++)
+    {
+        const part = parts[i]
+        if (isPath && part === "parent")
+        {
+            current = current.parentPath
+        }
+        else
+        {
+            if (isPath)
+            {
+                current = current.node[part];
+            }
+            else
+            {
+                current = current[part];
+            }
+
+            if ( i < last && (!current || typeof current !== "object") )
+            {
+                return FAILED;
+            }
+            isPath = false;
+        }
+    }
+
+    return isPath ? current.node : current
+}
+
+
+function captureContext(path, rules)
+{
+    if (typeof rules === "string")
+    {
+        return evalRule(path, rules)
+    }
+    else if (Array.isArray(rules))
+    {
+        let context = []
+        for (let i = 0; i < rules.length; i++)
+        {
+            const rule = rules[i]
+
+            if (typeof rule !== "string")
+            {
+                throw new Error("Invalid context rule: " + rule)
+            }
+
+            context.push(evalRule(path,rule))
+        }
+        return context
+    }
+    else if (rules && typeof rules === "object")
+    {
+        let context = {}
+        for (let key in rules)
+        {
+            if (rules.hasOwnProperty(key))
+            {
+                let rule = rules[key]
+
+                if (typeof rule !== "string")
+                {
+                    throw new Error("Invalid context rule: " + rule)
+                }
+
+                context[key] = evalRule(path, rule)
+            }
+        }
+        return context
+    }
+    else
+    {
+        throw new Error("Invalid context rule: " + rules)
+    }
+}
+
+
 module.exports = function (t) {
 
     t = t.types;
 
-    function insert(set, indexes, value, loc)
+    function insert(set, indexes, value, loc, contexts, ctx)
     {
         for (let i = 0; i < set.length; i++)
         {
@@ -49,11 +135,16 @@ module.exports = function (t) {
         {
             indexes.push(loc)
         }
+        if (contexts)
+        {
+            contexts.push(ctx)
+        }
     }
 
-    function recordCall(data, node, pluginOpts, memberCall, importedFnCall)
+    function recordCall(data, path, pluginOpts, memberCall, importedFnCall)
     {
-        let record, indexRecord
+        const node = path.node
+        let record, indexRecord, contextRecord
         const callee = node.callee
 
         const array = memberCall ?
@@ -87,14 +178,21 @@ module.exports = function (t) {
                     // {
                     record = data.calls[e.name];
                     indexRecord = pluginOpts.indexes && data.indexes[e.name];
+                    contextRecord = tf.captureContext && data.contexts[e.name];
                     if (!record)
                     {
                         record = [];
                         data.calls[e.name] = record;
+
                         if (pluginOpts.indexes)
                         {
                             indexRecord = []
                             data.indexes[e.name] = indexRecord;
+                        }
+                        if (tf.captureContext)
+                        {
+                            contextRecord = []
+                            data.contexts[e.name] = contextRecord;
                         }
                     }
 
@@ -126,7 +224,14 @@ module.exports = function (t) {
                         {
                             console.log("Record '" + values + "' for " + e.name);
                         }
-                        insert(record, indexRecord, values, [node.start, node.end]);
+                        insert(
+                            record,
+                            indexRecord,
+                            values,
+                            [node.start, node.end],
+                            contextRecord,
+                            contextRecord && captureContext(path, tf.captureContext)
+                        );
                     }
                     else if (data._config.debug)
                     {
@@ -386,6 +491,7 @@ module.exports = function (t) {
 
                 const moduleLookup = {}
 
+                let contextUsed = false;
                 const trackedFunctions = pluginOpts.trackedFunctions
                 for (let name in trackedFunctions)
                 {
@@ -401,8 +507,15 @@ module.exports = function (t) {
                         {
                             array.push(name);
                         }
+
+                        if (tf.captureContext && !data.contexts)
+                        {
+                            data.contexts = {};
+                        }
                     }
                 }
+
+
 
                 data._config = {
                     trackedFunctions: trackedFunctions,
@@ -498,14 +611,14 @@ module.exports = function (t) {
                     {
                         console.log("Module call for variable " + callee.name + "");
                     }
-                    recordCall(data, node, pluginOpts, false, false);
+                    recordCall(data, path, pluginOpts, false, false);
                 } else if (t.isIdentifier(callee) && data._config.isMemberCall[callee.name])
                 {
                     if (state.opts.debug)
                     {
                         console.log("Imported member call for variable " + callee.name + "");
                     }
-                    recordCall(data, node, pluginOpts, false, true);
+                    recordCall(data, path, pluginOpts, false, true);
                 } else if (t.isMemberExpression(callee) && t.isIdentifier(
                     callee.object) && data._config.hasMemberCall[callee.object.name])
                 {
@@ -513,7 +626,7 @@ module.exports = function (t) {
                     {
                         console.log("Member call for variable " + callee.object.name + "");
                     }
-                    recordCall(data, node, pluginOpts, true, false);
+                    recordCall(data, path, pluginOpts, true, false);
                 }
             },
             "ImportDeclaration": function (path, state) {

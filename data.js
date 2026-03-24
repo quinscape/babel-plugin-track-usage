@@ -56,6 +56,10 @@ var DataStore = {
                 {
                     cleaned[module].indexes = e.indexes;
                 }
+                if (e.contexts)
+                {
+                    cleaned[module].contexts = e.contexts;
+                }
 
             }
         }
