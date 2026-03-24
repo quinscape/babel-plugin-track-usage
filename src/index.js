@@ -31,9 +31,8 @@ function strip(path, sourceRoot)
 }
 
 
-function evalRule(path, rule)
+function evalRule(path, parts)
 {
-    let parts = rule.split(".")
     let current = path;
     let isPath = true;
     let last = parts.length - 1;
@@ -66,16 +65,28 @@ function evalRule(path, rule)
     return isPath ? current.node : current
 }
 
+const preparedContextSym = Symbol("PreparedContext");
 
-function captureContext(path, rules)
+function prepareContext(tf, rules)
 {
+
+    const existing = tf[preparedContextSym];
+    if (existing)
+    {
+        //console.log("REUSE", rules)
+        return existing
+    }
+    //console.log("PREPARE", rules)
+
+    let preparedRules, isArray = false;
     if (typeof rules === "string")
     {
-        return evalRule(path, rules)
+        preparedRules = rules.split(".")
     }
     else if (Array.isArray(rules))
     {
-        let context = []
+        isArray = true;
+        let arrayRules = []
         for (let i = 0; i < rules.length; i++)
         {
             const rule = rules[i]
@@ -85,13 +96,14 @@ function captureContext(path, rules)
                 throw new Error("Invalid context rule: " + rule)
             }
 
-            context.push(evalRule(path,rule))
+            arrayRules.push(rule.split("."))
         }
-        return context
+
+        preparedRules = arrayRules
     }
     else if (rules && typeof rules === "object")
     {
-        let context = {}
+        let objectRules = {}
         for (let key in rules)
         {
             if (rules.hasOwnProperty(key))
@@ -103,14 +115,54 @@ function captureContext(path, rules)
                     throw new Error("Invalid context rule: " + rule)
                 }
 
-                context[key] = evalRule(path, rule)
+                objectRules[key] = rule.split(".")
             }
         }
-        return context
+        
+        preparedRules = objectRules
     }
     else
     {
         throw new Error("Invalid context rule: " + rules)
+    }
+
+    const result = [preparedRules, isArray]
+    tf[preparedContextSym] =  result;
+    return result;
+}
+
+
+function captureContext(path, tf)
+{
+    const [rules, wasArray] = prepareContext(tf, tf.captureContext)
+
+    if (Array.isArray(rules))
+    {
+        if (!wasArray)
+        {
+            return evalRule(path, rules)
+        }
+        else
+        {
+            let context = []
+            for (let i = 0; i < rules.length; i++)
+            {
+                context.push(evalRule(path,rules[i]))
+            }
+            return context
+        }
+    }
+    else if (rules && typeof rules === "object")
+    {
+        let context = {}
+        for (let key in rules)
+        {
+            if (rules.hasOwnProperty(key))
+            {
+                context[key] = evalRule(path, rules[key])
+            }
+        }
+        return context
     }
 }
 
@@ -230,7 +282,7 @@ module.exports = function (t) {
                             values,
                             [node.start, node.end],
                             contextRecord,
-                            contextRecord && captureContext(path, tf.captureContext)
+                            contextRecord && captureContext(path, tf)
                         );
                     }
                     else if (data._config.debug)

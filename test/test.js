@@ -253,6 +253,10 @@ describe("Track Usage Plugin", function ()
                 [
                     "PARAMS",
                     34
+                ],
+                [
+                    "PARAMS",
+                    35
                 ]
             ]);
             assert.deepEqual(usages['./context'].calls.objectContextTarget, [
@@ -270,6 +274,10 @@ describe("Track Usage Plugin", function ()
                 [
                     "__FAILED__",
                     "bbb"
+                ],
+                [
+                    "ccc",
+                    "__FAILED__"
                 ]
             ]);
 
