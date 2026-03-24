@@ -18,7 +18,7 @@
     "license": "Apache-2.0",
     "homepage": "https://github.com/quinscape/babel-plugin-track-usage",
     "dependencies": {
-        "@babel/runtime": "^7.28.4",
+        "@babel/runtime": "^7.29.2",
         "deep-equal": "^2.2.3"
     },
     "devDependencies": {
@@ -29,7 +29,7 @@
         "@babel/register": "^7.28.6",
         "babel-plugin-espower": "^3.0.1",
         "core-js": "^3.49.0",
-        "mocha": "^11.7.4",
+        "mocha": "^11.7.5",
         "power-assert": "^1.6.1"
     }
 }
