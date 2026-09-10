@@ -44,6 +44,14 @@ The *"fn"* prop is either empty if the module is called as function itself or fn
 If the *"varArgs"* prop is set to true, the method can have additional parameters to the first statically analyzable one.
 It can also be set to a numeric value specifying how many arguments are captured (`true` is the same as `1`).
 
+If the *"allowIdentifier"* prop is set to true, arguments can also be plain identifiers, which are captured as
+`{ "__identifier": "<name>" }`.
+
+If the *"captureContext"* prop is set, the tracking can grab additional information from the AST relative to the root
+of the CallExpression. If *"captureContext"* is a string(") , it grabs one value. If it is an array of string, each string
+grabs a value, and it returns an array. if it is an object with string keys and string values, the result will be returned
+in the same object shape.
+
 All methods calls are identified by a deep-equality comparison of their arguments, which needs to be a javascript literals or object
 expressions containing literals.
 
