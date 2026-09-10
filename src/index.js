@@ -255,7 +255,8 @@ module.exports = function (t) {
                     {
                         const evaluated = staticEval(
                             args[j],
-                            tf.allowIdentifier
+                            tf.allowIdentifier,
+                            tf.allowMemberExpressions
                         )
                         if (evaluated === undefined)
                         {
@@ -299,7 +300,49 @@ module.exports = function (t) {
         }
     }
 
-    function staticEval(node, allowIdentifier)
+    /**
+     * Extracts the dotted path of a member expression chain rooted in an identifier.
+     *
+     * Normal ("a.b"), optional ("a?.b") and non-null asserted ("a!.b") access all normalize to the
+     * same path since they reference the same value.
+     *
+     * @param node      AST node
+     * @returns {String|null} dotted path or null if the node is not such a chain
+     */
+    function memberPath(node)
+    {
+        // "a!.b" wraps the object in a TS non-null assertion
+        while (t.isTSNonNullExpression(node) || t.isParenthesizedExpression(node))
+        {
+            node = node.expression;
+        }
+
+        if (t.isIdentifier(node))
+        {
+            return node.name;
+        }
+
+        if (t.isMemberExpression(node) || t.isOptionalMemberExpression(node))
+        {
+            // we only follow static property access, no "a[expr]"
+            if (node.computed || !t.isIdentifier(node.property))
+            {
+                return null;
+            }
+
+            const objectPath = memberPath(node.object)
+            if (objectPath === null)
+            {
+                return null;
+            }
+
+            return objectPath + "." + node.property.name;
+        }
+
+        return null;
+    }
+
+    function staticEval(node, allowIdentifier, allowMemberExpressions)
     {
         let i, out, evaluatedValue
 
@@ -326,7 +369,7 @@ module.exports = function (t) {
             out = new Array(elements.length);
             for (i = 0; i < elements.length; i++)
             {
-                evaluatedValue = staticEval(elements[i], allowIdentifier);
+                evaluatedValue = staticEval(elements[i], allowIdentifier, allowMemberExpressions);
 
                 if (evaluatedValue !== undefined)
                 {
@@ -362,7 +405,7 @@ module.exports = function (t) {
                     return undefined;
                 }
 
-                evaluatedValue = staticEval(property.value, allowIdentifier);
+                evaluatedValue = staticEval(property.value, allowIdentifier, allowMemberExpressions);
 
                 if (evaluatedValue !== undefined)
                 {
@@ -379,6 +422,16 @@ module.exports = function (t) {
         else if (allowIdentifier && t.isIdentifier(node))
         {
             return { __identifier: node.name };
+        }
+        else if (allowMemberExpressions)
+        {
+            const path = memberPath(node)
+
+            // a lone identifier is no member expression, it is handled by allowIdentifier above
+            if (path !== null && path.indexOf(".") > 0)
+            {
+                return { __member: path };
+            }
         }
 
         return undefined;

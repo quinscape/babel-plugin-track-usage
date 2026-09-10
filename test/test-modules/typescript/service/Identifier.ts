@@ -1,5 +1,6 @@
 export class Complex
 {
+    aaa: Complex
 
 }
 

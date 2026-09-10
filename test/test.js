@@ -236,6 +236,36 @@ describe("Track Usage Plugin", function ()
             ]);
         })
 
+        it("supports member expressions", function ()
+        {
+
+            transform("./test-modules/member-grab.js", false, false);
+
+            const usages = Data.get().usages
+            //console.log(JSON.stringify(usages, null, 2));
+            assert.deepEqual(usages['./member-grab'].calls.multiVarArgMember, [
+                [
+                    { __member: "MyIdent.aaa" }, { value: "abc"}
+                ],
+                [
+                    { __member: "MyIdent.aaa.aaa" }, { value: "deep"}
+                ],
+                // "?." references the same value, so it normalizes to the same path
+                [
+                    { __member: "MyIdent.aaa" }, { value: "optional"}
+                ],
+                // .. and member expressions work nested within objects and arrays
+                [
+                    { nested: { __member: "MyIdent.aaa" } }, [ { __member: "MyIdent.aaa.aaa" } ]
+                ]
+
+                // no entries for the computed access, the call within the chain and the bare identifier
+            ]);
+
+            // allowIdentifier does not imply allowMemberExpressions
+            assert.deepEqual(usages['./member-grab'].calls.multiVarArgIdent, []);
+        })
+
         it("captures context", function ()
         {
 

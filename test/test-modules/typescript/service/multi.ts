@@ -15,3 +15,8 @@ export function multiIdent(complex : Complex , opts : object) : number
 {
     return 3;
 }
+
+export function multiMember(complex : any , opts : any) : number
+{
+    return 4;
+}

@@ -48,6 +48,15 @@ function transform(relPath, typeScript = false, indexes = false)
                         varArgs: 2,
                         allowIdentifier: true
                     },
+                    multiVarArgMember: {
+                        module: servicePath + "multi",
+                        fn: "multiMember",
+                        varArgs: 2,
+                        allowMemberExpressions: true,
+                        captureContext: {
+                            name: "arguments.0.name",
+                        }
+                    },
                     ctor: {
                         module: servicePath + "ctor",
                         fn: "MyConstructor"

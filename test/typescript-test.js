@@ -223,5 +223,41 @@ describe("Track Usage Plugin (Typescript)", function ()
 
     })
 
+    it("supports member expressions", function ()
+    {
+        transform("./test-modules/typescript/type-grab.ts", true);
+
+        const usages = Data.get().usages
+        console.log(JSON.stringify(usages, null, 2));
+
+        assert.deepEqual(usages['./typescript/type-grab'].calls.multiVarArgMember, [
+            [
+                { __member: "MyIdent.aaa" }, { value: "abc"}
+            ],
+            [
+                { __member: "MyIdent.aaa.aaa" }, { value: "deep"}
+            ],
+            // "?." and "!" reference the same value, so they normalize to the same path
+            [
+                { __member: "MyIdent.aaa" }, { value: "optional"}
+            ],
+            [
+                { __member: "MyIdent.aaa" }, { value: "nonNull"}
+            ],
+            [
+                { __member: "MyIdent.aaa.aaa" }, { value: "mixed"}
+            ],
+            // .. and they work nested within objects and arrays
+            [
+                { nested: { __member: "MyIdent.aaa" } }, [ { __member: "MyIdent.aaa.aaa" } ]
+            ]
+
+            // no entries for the computed access, the call within the chain and the bare identifier
+        ]);
+
+        // allowIdentifier does not imply allowMemberExpressions
+        assert.deepEqual(usages['./typescript/type-grab'].calls.multiVarArgIdent, []);
+    })
+
 
 });

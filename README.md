@@ -52,6 +52,15 @@ of the CallExpression. If *"captureContext"* is a string(") , it grabs one value
 grabs a value, and it returns an array. if it is an object with string keys and string values, the result will be returned
 in the same object shape.
 
+If the *"allowMemberExpressions"* prop is set to true, arguments can also be member expressions rooted in an
+identifier, which are captured as `{ "__member": "<dotted path>" }`. Normal (`a.b`, `a.b.c`), optional (`a?.b`) and
+non-null asserted (`a!.b`) access all normalize to the same dotted path since they reference the same value.
+Computed access (`a["b"]`) and calls within the chain (`a().b`) are not statically analyzable and cause the call to
+be ignored as usual.
+
+The two options are independent of each other: *"allowMemberExpressions"* alone does not capture a bare identifier,
+and *"allowIdentifier"* alone does not capture `a.b`.
+
 All methods calls are identified by a deep-equality comparison of their arguments, which needs to be a javascript literals or object
 expressions containing literals.
 
